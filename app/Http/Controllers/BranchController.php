@@ -19,7 +19,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.configure.branch.create_branch');
     }
 
     /**

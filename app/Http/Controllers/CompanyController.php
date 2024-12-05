@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -11,7 +13,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('admin.configure.company.company');
+        $companies = Company::all()->reverse();
+        return view('admin.configure.company.company', compact('companies'));
     }
 
     /**
@@ -19,7 +22,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.configure.company.create_company');
     }
 
     /**
@@ -27,7 +30,37 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        // Validation
+        $validatedData = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'company_short_name' => 'nullable|string|max:255',
+            'company_address' => 'nullable|string|max:500',
+            'company_district' => 'nullable|string|max:255',
+            'company_zip_code' => 'nullable|string|max:10',
+            'company_id_numner' => 'required|string|max:255',
+            'company_registration_number' => 'required|string|max:255',
+            'company_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'company_contact_number' => 'required|string|max:15',
+            'company_land_line' => 'nullable|string|max:15',
+            'company_whatsapp_number' => 'required|string|max:15',
+            'company_email' => 'required|email|max:255',
+            'company_website' => 'nullable|max:255',
+        ]);
+
+        // dd($validatedData);
+
+
+        // Handle file upload
+        if ($request->hasFile('company_logo')) {
+            $validatedData['company_logo'] = $request->file('company_logo')->store('uploads/company_logos', 'public');
+        }
+
+        // Store the data in the database
+        Company::create($validatedData);
+
+        // Redirect back with success message
+        return redirect()->route('company.index')->with('success', 'Company information stored successfully!');
     }
 
     /**
@@ -43,15 +76,66 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+            // Find the company by its ID
+        $company = Company::findOrFail($id);
+
+        // Return the view with the company data
+        return view('admin.configure.company.edit_company', compact('company'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validate the incoming request
+        $request->validate([
+            'company_name' => 'required|string|max:255',
+            'company_short_name' => 'nullable|string|max:255',
+            'company_address' => 'nullable|string|max:500',
+            'company_district' => 'nullable|string|max:255',
+            'company_zip_code' => 'nullable|string|max:10',
+            'company_id_numner' => 'required|string|max:255',
+            'company_registration_number' => 'required|string|max:255',
+            'company_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'company_contact_number' => 'required|string|max:15',
+            'company_land_line' => 'nullable|string|max:15',
+            'company_whatsapp_number' => 'required|string|max:15',
+            'company_email' => 'required|email|max:255',
+            'company_website' => 'nullable|max:255',
+        ]);
+
+        // Find the company by ID
+        $company = Company::findOrFail($id);
+
+        // Update the company fields
+        $company->company_name = $request->company_name;
+        $company->company_short_name = $request->company_short_name;
+        $company->company_address = $request->company_address;
+        $company->company_district = $request->company_district;
+        $company->company_zip_code = $request->company_zip_code;
+        $company->company_id_numner = $request->company_id_numner;
+        $company->company_registration_number = $request->company_registration_number;
+        $company->company_contact_number = $request->company_contact_number;
+        $company->company_land_line = $request->company_land_line;
+        $company->company_whatsapp_number = $request->company_whatsapp_number;
+        $company->company_email = $request->company_email;
+        $company->status = $request->status;
+
+        if ($request->company_logo) {
+            if ($company->company_logo) {
+                // Delete the image from storage
+                Storage::disk('public')->delete($company->company_logo);
+            }
+            // Store the new logo file using the pattern you provided
+            $company->company_logo = $request->file('company_logo')->store('uploads/company_logos', 'public');
+        }
+
+        // Save the updated company data
+        $company->save();
+
+        // Redirect back with a success message
+        return redirect()->route('company.index')->with('success', 'Company updated successfully!');
     }
 
     /**
@@ -59,6 +143,30 @@ class CompanyController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Find the company by ID
+        $company = Company::findOrFail($id);
+
+        // Delete the company logo if it exists
+        if ($company->company_logo) {
+            // Delete the image from storage
+            Storage::disk('public')->delete($company->company_logo);
+        }
+
+        // Delete the company record from the database
+        $company->delete();
+
+        // Redirect back with a success message
+        return redirect()->route('company.index')->with('success', 'Company and its logo deleted successfully!');
+    }
+
+    public function activeordeactive(string $id)
+    {
+        $company = Company::findOrFail($id);
+
+        $company->status = !$company->status;
+        $company->save();
+
+        return redirect()->back()->with('success', 'Company and its logo deleted successfully!');
+
     }
 }

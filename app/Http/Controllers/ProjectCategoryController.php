@@ -11,7 +11,7 @@ class ProjectCategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.configure.project.project');
+        return view('admin.configure.project_category.project-category');
     }
 
     /**

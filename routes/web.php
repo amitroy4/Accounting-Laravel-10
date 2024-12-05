@@ -30,6 +30,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/company', CompanyController::class);
+    Route::get('/dashboard/company/activeordeactive/{Id}', [CompanyController::class,'activeordeactive'])->name('company.activeordeactive');
     Route::resource('/dashboard/branch', BranchController::class);
     Route::resource('/dashboard/project', ProjectController::class);
     Route::resource('/dashboard/project_category', ProjectCategoryController::class);
