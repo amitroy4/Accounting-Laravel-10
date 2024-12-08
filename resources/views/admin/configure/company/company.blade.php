@@ -135,7 +135,7 @@
                                                                                 <i class="fa fa-edit"></i>
                                                                             </button>
                                                                             </a>
-                                                                            <form action="{{ route('company.destroy', $company->id) }}" method="POST" style="display:inline;">
+                                                                            <form action="{{ route('company.destroy', $company->id) }}" method="POST" style="display:inline;"  onsubmit="event.preventDefault(); confirmDelete(this);">
                                                                                 @csrf
                                                                                 @method('DELETE')
                                                                                 <button type="submit" data-bs-toggle="tooltip" title="Remove" class="btn btn-link btn-danger">
@@ -166,5 +166,22 @@
 </div>
 @endsection
 @push('script')
-
+<script>
+    function confirmDelete(form) {
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this data!",
+            icon: "warning",
+            buttons: ["Cancel", "Yes, delete it!"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                form.submit();
+                swal("Deleted!", "Company has been deleted.", "success");
+            } else {
+                swal("Your data is safe!");
+            }
+        });
+    }
+</script>
 @endpush
