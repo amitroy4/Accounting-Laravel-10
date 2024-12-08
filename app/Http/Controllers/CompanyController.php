@@ -46,6 +46,8 @@ class CompanyController extends Controller
             'company_whatsapp_number' => 'required|string|max:15',
             'company_email' => 'required|email|max:255',
             'company_website' => 'nullable|max:255',
+            'status' => 'nullable|boolean',
+
         ]);
 
         // dd($validatedData);

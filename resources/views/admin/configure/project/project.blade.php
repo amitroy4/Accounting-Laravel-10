@@ -56,20 +56,29 @@
                               <div class="row">
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Project Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Project Name">
+                                       <label for="project_name">Project Name</label>
+                                       <input type="text" class="form-control form-control" id="project_name" name="project_name" placeholder="Project Name">
+                                       @error('project_name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Project Short Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Project Short Name">
+                                       <label for="project_short_name">Project Short Name</label>
+                                       <input type="text" class="form-control form-control" id="project_short_name" name="project_short_name" placeholder="Project Short Name">
+                                       @error('project_short_name')
+                                       <span class="text-danger">{{ $message }}</span>
+                                   @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Project ID</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Project ID">
+                                       <label for="project_code">Project Code</label>
+                                       <input type="text" class="form-control form-control" id="project_code" name="project_code" placeholder="Project Code">
+                                       @error('project_code')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">

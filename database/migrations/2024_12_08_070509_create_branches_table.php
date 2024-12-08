@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('branch_address', 500)->nullable();
             $table->string('branch_district', 255)->nullable();
             $table->string('branch_zipcode', 10)->nullable();
+            $table->boolean('status')->default(1);
             $table->string('contact_person_name', 15);
             $table->string('branch_contact_number', 15);
             $table->string('branch_land_line', 15)->nullable();

@@ -23,5 +23,6 @@ class Branch extends Model
         'branch_whatsapp',
         'branch_email',
         'branch_logo',
+        'status',
     ];
 }

@@ -70,19 +70,24 @@
                                                                 <tr role="row">
                                                                     <th class="sorting_asc" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
+                                                                        style="width: 50px;" aria-sort="ascending"
+                                                                        aria-label="Name: activate to sort column descending">
+                                                                        SL</th>
+                                                                    <th class="sorting_asc" tabindex="0"
+                                                                        aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 373.033px;" aria-sort="ascending"
                                                                         aria-label="Name: activate to sort column descending">
-                                                                        Name</th>
+                                                                        Branch</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 534.283px;"
                                                                         aria-label="Position: activate to sort column ascending">
-                                                                        Position</th>
+                                                                        Address</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
                                                                         aria-label="Office: activate to sort column ascending">
-                                                                        Office</th>
+                                                                        Status</th>
                                                                     <th style="width: 120.717px;" class="sorting"
                                                                         tabindex="0" aria-controls="add-row" rowspan="1"
                                                                         colspan="1"
@@ -90,141 +95,50 @@
                                                                         Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tfoot>
-                                                                <tr>
-                                                                    <th rowspan="1" colspan="1">Name</th>
-                                                                    <th rowspan="1" colspan="1">Position</th>
-                                                                    <th rowspan="1" colspan="1">Office</th>
-                                                                    <th rowspan="1" colspan="1">Action</th>
-                                                                </tr>
-                                                            </tfoot>
                                                             <tbody>
+                                                                @foreach ($branches as $key => $branch)
                                                                 <tr role="row" class="odd">
-                                                                    <td class="sorting_1">Airi Satou</td>
-                                                                    <td>Accountant</td>
-                                                                    <td>Tokyo</td>
+                                                                    <td>{{$key+1}}</td>
+                                                                    <td class=" d-flex align-items-center">
+                                                                        <img src="{{ asset('storage/' . $branch->branch_logo) }}" alt="{{ $branch->branch_name }}" width="100">
+                                                                        <div class=" ps-4">
+                                                                            Name: <b>{{$branch->branch_name}}</b> <br>
+                                                                            Code: {{$branch->branch_code}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>{{$branch->branch_address}},{{$branch->branch_district}}, {{$branch->branch_zipcode}}</td>
+                                                                    <td>
+                                                                        @if ($branch->status==1)
+                                                                        <a class="badge bg-success text-light round" href="{{route('branch.activeordeactive',$branch->id)}}">
+                                                                            Active
+                                                                        </a>
+                                                                        @else
+                                                                        <a class="badge bg-danger text-light round" href="{{route('branch.activeordeactive',$branch->id)}}">
+                                                                            Inactive
+                                                                        </a>
+                                                                        @endif
+                                                                    </td>
                                                                     <td>
                                                                         <div class="form-button-action">
-                                                                            <button type="button"
+                                                                            <a href="{{route('branch.edit',$branch->id)}}">
+                                                                                <button type="button"
                                                                                 data-bs-toggle="tooltip" title=""
                                                                                 class="btn btn-link btn-primary btn-lg"
                                                                                 data-original-title="Edit Task">
                                                                                 <i class="fa fa-edit"></i>
                                                                             </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
+                                                                            </a>
+                                                                            <form action="{{ route('branch.destroy', $branch->id) }}" method="POST" style="display:inline;"  onsubmit="event.preventDefault(); confirmDelete(this);">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" data-bs-toggle="tooltip" title="Remove" class="btn btn-link btn-danger">
+                                                                                    <i class="fa fa-times"></i>
+                                                                                </button>
+                                                                            </form>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-                                                                <tr role="row" class="odd">
-                                                                    <td class="sorting_1">Airi Satou</td>
-                                                                    <td>Accountant</td>
-                                                                    <td>Tokyo</td>
-                                                                    <td>
-                                                                        <div class="form-button-action">
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr role="row" class="even">
-                                                                    <td class="sorting_1">Ashton Cox</td>
-                                                                    <td>Junior Technical Author</td>
-                                                                    <td>San Francisco</td>
-                                                                    <td>
-                                                                        <div class="form-button-action">
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr role="row" class="odd">
-                                                                    <td class="sorting_1">Brielle Williamson</td>
-                                                                    <td>Integration Specialist</td>
-                                                                    <td>New York</td>
-                                                                    <td>
-                                                                        <div class="form-button-action">
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr role="row" class="even">
-                                                                    <td class="sorting_1">Cedric Kelly</td>
-                                                                    <td>Senior Javascript Developer</td>
-                                                                    <td>Edinburgh</td>
-                                                                    <td>
-                                                                        <div class="form-button-action">
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr role="row" class="odd">
-                                                                    <td class="sorting_1">Colleen Hurst</td>
-                                                                    <td>Javascript Developer</td>
-                                                                    <td>San Francisco</td>
-                                                                    <td>
-                                                                        <div class="form-button-action">
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -245,5 +159,22 @@
 </div>
 @endsection
 @push('script')
-
+<script>
+    function confirmDelete(form) {
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this data!",
+            icon: "warning",
+            buttons: ["Cancel", "Yes, delete it!"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                form.submit();
+                swal("Deleted!", "Branch has been deleted.", "success");
+            } else {
+                swal("Your Branch is safe!");
+            }
+        });
+    }
+</script>
 @endpush
