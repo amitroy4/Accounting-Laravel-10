@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('company_address')->nullable();
             $table->string('company_district')->nullable();
             $table->string('company_zip_code')->nullable();
-            $table->string('company_id_numner');
+            $table->string('company_code');
             $table->string('company_registration_number');
             $table->string('company_logo')->nullable();
             $table->boolean('status')->default(1);

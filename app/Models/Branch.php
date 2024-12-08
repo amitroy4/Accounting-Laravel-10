@@ -10,8 +10,8 @@ class Branch extends Model
     use HasFactory;
     protected $fillable = [
         'branch_name',
-        'branchId',
-        'main_branch',
+        'branch_code',
+        'parent_branch',
         'opening_time',
         'closing_time',
         'branch_address',

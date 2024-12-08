@@ -14,7 +14,7 @@ class Company extends Model
         'company_address',
         'company_district',
         'company_zip_code',
-        'company_id_numner',
+        'company_code',
         'company_registration_number',
         'company_logo',
         'status',

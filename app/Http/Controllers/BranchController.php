@@ -32,8 +32,8 @@ class BranchController extends Controller
         // Validation
         $validatedData = $request->validate([
             'branch_name' => 'required|string|max:255',
-            'branchId' => 'required|string|max:255',
-            'main_branch' => 'nullable|string|max:255',
+            'branch_code' => 'required|string|max:255',
+            'parent_branch' => 'nullable|string|max:255',
             'opening_time' => 'required|max:255',
             'closing_time' => 'required|max:255',
             'branch_address' => 'nullable|string|max:500',

@@ -38,7 +38,7 @@ class CompanyController extends Controller
             'company_address' => 'nullable|string|max:500',
             'company_district' => 'nullable|string|max:255',
             'company_zip_code' => 'nullable|string|max:10',
-            'company_id_numner' => 'required|string|max:255',
+            'company_code' => 'required|string|max:255',
             'company_registration_number' => 'required|string|max:255',
             'company_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'company_contact_number' => 'required|string|max:15',
@@ -95,7 +95,7 @@ class CompanyController extends Controller
             'company_address' => 'nullable|string|max:500',
             'company_district' => 'nullable|string|max:255',
             'company_zip_code' => 'nullable|string|max:10',
-            'company_id_numner' => 'required|string|max:255',
+            'company_code' => 'required|string|max:255',
             'company_registration_number' => 'required|string|max:255',
             'company_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'company_contact_number' => 'required|string|max:15',
@@ -114,7 +114,7 @@ class CompanyController extends Controller
         $company->company_address = $request->company_address;
         $company->company_district = $request->company_district;
         $company->company_zip_code = $request->company_zip_code;
-        $company->company_id_numner = $request->company_id_numner;
+        $company->company_code = $request->company_code;
         $company->company_registration_number = $request->company_registration_number;
         $company->company_contact_number = $request->company_contact_number;
         $company->company_land_line = $request->company_land_line;

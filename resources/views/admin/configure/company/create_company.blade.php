@@ -104,9 +104,9 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
-                                                        <label for="company_id_numner">Company ID <span class="text-danger">*</span></label>
-                                                        <input type="text" name="company_id_numner" class="form-control" id="company_id_numner" placeholder="Company ID" >
-                                                        @error('company_id_numner')
+                                                        <label for="company_code">Company Code<span class="text-danger">*</span></label>
+                                                        <input type="text" name="company_code" class="form-control" id="company_code" placeholder="Company Code" readonly>
+                                                        @error('company_code')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
@@ -257,6 +257,7 @@ $(document).ready(function() {
                 reader.readAsDataURL(file); // Read the file as a data URL
             }
         });
+        $('#company_code').val(generateRandomNumber());
     });
 
 </script>
