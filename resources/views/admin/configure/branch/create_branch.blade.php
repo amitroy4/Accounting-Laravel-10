@@ -45,6 +45,8 @@
                </div>
                <!--Double Part Card Header-->
                <div class="card-body">
+                <form action="{{route('branch.store')}}" id="branchForm"  method="POST" enctype="multipart/form-data">
+                    @csrf
                   <div class="row">
                      <div class="col-md-8">
                         <div class="card custom-c-bg1">
@@ -55,75 +57,93 @@
                               <div class="row">
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Name">
+                                       <label for="largeInput">Branch Name <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="branch_name" name="branch_name" placeholder="Branch Name">
+                                        @error('branch_name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch ID</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch ID">
+                                       <label for="largeInput">Branch ID <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="branchId" name="branchId" placeholder="Branch ID">
+                                       @error('branchId')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="defaultSelect">Parent Company or Branch</label>
-                                       <select class="form-select form-control" id="defaultSelect">
-                                          <option>Active</option>
+                                       <label for="branch">Parent Company or Branch</label>
+                                       <select class="form-select form-control" id="main_branch" name="main_branch">
+                                          <option value="">Select</option>
                                        </select>
+                                       @error('main_branch')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label>Branch Opening Time</label>
-                                       <div class="input-group">
-                                          <input type="text" class="form-control" id="timepicker" name="timepicker">
-                                          <span class="input-group-text">
-                                          <i class="fa fa-clock"></i>
-                                          </span>
-                                       </div>
+                                      <label for="opening_time">Branch Opening Time<span class="text-danger">*</span></label>
+                                        <input type="time" class="form-control" id="opening_time" name="opening_time">
+                                        @error('opening_time')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                 </div>
+                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label>Branch Closing Time</label>
-                                       <div class="input-group">
-                                          <input type="text" class="form-control" id="timepicker" name="timepicker">
-                                          <span class="input-group-text">
-                                          <i class="fa fa-clock"></i>
-                                          </span>
-                                       </div>
+                                       <label for="closing_time">Branch Closing Time<span class="text-danger">*</span></label>
+                                          <input type="time" class="form-control" id="closing_time" name="closing_time">
+                                          @error('closing_time')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Address</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Address">
+                                       <label for="branch_address">Branch Address</label>
+                                       <input type="text" class="form-control form-control" id="branch_address" name="branch_address" placeholder="Branch Address">
+                                       @error('branch_address')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">District</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="District">
+                                       <label for="branch_district">District</label>
+                                       <input type="text" class="form-control form-control" id="branch_district" name="branch_district" placeholder="District">
+                                       @error('branch_district')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-3">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Zip Code</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Zip Code">
+                                       <label for="branch_zipcode">Zip Code</label>
+                                       <input type="text" class="form-control form-control" id="branch_zipcode" name="branch_zipcode" placeholder="Zip Code">
+                                       @error('branch_zipcode')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Logo</label>
-                                       <input type="file" class="form-control form-control" id="defaultInput" placeholder="Branch Logo">
+                                       <label for="branch_logo">Branch Logo</label>
+                                       <input type="file" class="form-control form-control" id="branch_logo" name="branch_logo" placeholder="Branch Logo">
+                                       @error('branch_logo')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="defaultSelect">Status</label>
-                                       <select class="form-select form-control" id="defaultSelect">
-                                          <option>Active</option>
+                                       <label for="status">Status</label>
+                                       <select class="form-select form-control" id="status">
+                                          <option value="1">Active</option>
+                                          <option value="0">Inactive</option>
                                        </select>
                                     </div>
                                  </div>
@@ -153,32 +173,47 @@
                               <div class="row">
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Contact Person Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Contact Person Name">
+                                       <label for="contact_person_name">Contact Person Name<span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="contact_person_name" name="contact_person_name" placeholder="Contact Person Name">
+                                       @error('contact_person_name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Contact Number</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Contact Number">
+                                       <label for="branch_contact_number">Branch Contact Number <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="branch_contact_number" name="branch_contact_number" placeholder="Branch Contact Number">
+                                       @error('branch_contact_number')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Land Line Number</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Land Line Number">
+                                       <label for="branch_land_line">Branch Land Line Number</label>
+                                       <input type="text" class="form-control form-control" id="branch_land_line" name="branch_land_line" placeholder="Branch Land Line Number">
+                                       @error('branch_land_line')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Whatsapp Number</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Whatsapp Number">
+                                       <label for="branch_whatsapp">Branch Whatsapp Number <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="branch_whatsapp" name="branch_whatsapp" placeholder="Branch Whatsapp Number">
+                                       @error('branch_whatsapp')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Branch Email Address</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Branch Email Address">
+                                       <label for="branch_email">Branch Email Address <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="branch_email" name="branch_email" placeholder="Branch Email Address">
+                                       @error('branch_email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                  </div>
                               </div>
@@ -186,6 +221,7 @@
                         </div>
                      </div>
                   </div>
+                </form>
                </div>
             </div>
          </div>
@@ -195,5 +231,18 @@
 </div>
 @endsection
 @push('script')
+<script>
+    $(document).ready(function () {
+    $('.submit-btn').on('click', function (e) {
+        e.preventDefault(); // Prevent the default link behavior
 
+        // Check if the form is valid
+        if ($('#branchForm')[0].checkValidity()) {
+            $('#branchForm')[0].submit(); // Use the native submit method
+        } else {
+            $('#branchForm')[0].reportValidity(); // Show validation messages
+        }
+    });
+});
+</script>
 @endpush

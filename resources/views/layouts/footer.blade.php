@@ -45,6 +45,8 @@
 
 	<!-- DateTimePicker -->
 	<script src="{{asset('admin')}}/assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
 	<!-- Bootstrap Tagsinput -->
 	<script src="{{asset('admin')}}/assets/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
