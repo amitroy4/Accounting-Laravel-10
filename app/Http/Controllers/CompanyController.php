@@ -166,7 +166,7 @@ class CompanyController extends Controller
         $company->status = !$company->status;
         $company->save();
 
-        return redirect()->back()->with('success', 'Company and its logo deleted successfully!');
+        return redirect()->back()->with('success', 'Status Changed successfully!');
 
     }
 }

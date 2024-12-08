@@ -222,6 +222,67 @@
 			fillColor: 'rgba(255, 165, 52, .14)'
 		});
 	</script>
+     @if (session('success'))
+     <script>
+         $(document).ready(function () {
+             $.notify({
+                 // Options
+                 message: '{{ session('success') }}'
+             }, {
+                 // Settings
+                 type: 'success',
+                 delay: 3000,
+                 allow_dismiss: true,
+                 placement: {
+                     from: "top",
+                     align: "right"
+                 }
+             });
+         });
+
+     </script>
+     @endif
+
+     @if (session('danger'))
+     <script>
+         $(document).ready(function () {
+             $.notify({
+                 // Options
+                 message: '{{ session('danger') }}'
+             }, {
+                 // Settings
+                 type: 'danger',
+                 delay: 3000,
+                 allow_dismiss: true,
+                 placement: {
+                     from: "top",
+                     align: "right"
+                 }
+             });
+         });
+
+     </script>
+     @endif
+     @if (session('error'))
+     <script>
+         $(document).ready(function () {
+             $.notify({
+                 // Options
+                 message: '{{ session('error ') }}'
+             }, {
+                 // Settings
+                 type: 'danger',
+                 delay: 3000,
+                 allow_dismiss: true,
+                 placement: {
+                     from: "top",
+                     align: "right"
+                 }
+             });
+         });
+
+     </script>
+     @endif
 
 </body>
 </html>
