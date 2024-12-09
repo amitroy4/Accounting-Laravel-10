@@ -65,7 +65,7 @@
                                                         <label for="project_category_name">Project Category Name<span
                                                             class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="project_category_name" name="project_category_name"
-                                                            placeholder="Project Category Name" value="{{ $project_category->project_category_name}}">
+                                                            placeholder="Project Category Name" value="{{ $project_category->project_category_name}}" required>
                                                         @error('project_category_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -119,10 +119,10 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="project_category_name">Project Category Name</label>
+                                                        <label for="project_category_name">Project Category Name<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control"
                                                             id="project_category_name" name="project_category_name"
-                                                            placeholder="Project Category Name">
+                                                            placeholder="Project Category Name" required>
                                                         @error('project_category_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -292,7 +292,30 @@
                 $('#projectCategoryForm')[0].reportValidity(); // Show validation messages
             }
         });
-        $('#project_category_code').val(generateRandomNumber());
+        // When the user types in the input field
+        $('#project_category_name').on('keyup', function () {
+            var inputName = $('#project_category_name').val(); // Get the value from input field
+            var currentYear = new Date().getFullYear(); // Get the current year (e.g., 2024)
+
+            // Check if the input has at least 3 characters
+
+            // Get the first 3 characters of the input name
+            var prefix = inputName.substring(0, 3).toUpperCase();
+
+            // Get the last two digits of the current year
+            var yearSuffix = currentYear.toString().slice(-2);
+
+            // Generate a random 3-digit number
+            var randomNumber = Math.floor(100 + Math.random() *
+            900); // Generate a number between 100 and 999
+
+            // Format the final result
+            var result = prefix + '-' + yearSuffix + randomNumber;
+
+            // Display the result in the <p> element
+            $('#project_category_code').val(result);
+
+        });
     });
 
     function confirmDelete(form) {

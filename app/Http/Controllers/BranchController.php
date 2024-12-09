@@ -23,9 +23,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-        $branches = Branch::whereNull('parent_branch')
-                  ->where('status', 1)
-                  ->get();
+        $branches = Branch::where('status', 1)->get();
         return view('admin.configure.branch.create_branch',compact('branches'));
     }
 
@@ -38,18 +36,18 @@ class BranchController extends Controller
         // Validation
         $validatedData = $request->validate([
             'branch_name' => 'required|string|max:255',
-            'branch_code' => 'required|string|max:255',
+            'branch_code' => 'nullable|string|max:255',
             'parent_branch' => 'nullable|string|max:255',
-            'opening_time' => 'required|max:255',
-            'closing_time' => 'required|max:255',
-            'branch_address' => 'nullable|string|max:500',
+            'opening_time' => 'nullable|max:255',
+            'closing_time' => 'nullable|max:255',
+            'branch_address' => 'required|string|max:500',
             'branch_district' => 'nullable|string|max:255',
             'branch_zipcode' => 'nullable|string|max:10',
-            'contact_person_name' => 'required|string|max:15',
-            'branch_contact_number' => 'required|string|max:15',
+            'contact_person_name' => 'nullable|string|max:15',
+            'branch_contact_number' => 'nullable|string|max:15',
             'branch_land_line' => 'nullable|string|max:15',
-            'branch_whatsapp' => 'required|string|max:15',
-            'branch_email' => 'required|email|max:255',
+            'branch_whatsapp' => 'nullable|string|max:15',
+            'branch_email' => 'nullable|email|max:255',
             'branch_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status' => 'nullable|boolean',
 
@@ -86,9 +84,14 @@ class BranchController extends Controller
     {
         // Find the branch by its ID
         $branch = Branch::findOrFail($id);
-        $branches = Branch::whereNull('parent_branch')
-                  ->where('status', 1)
-                  ->get();
+        // Get all sub-branches where parent_branch is equal to the provided ID
+        $subbranches = Branch::where('parent_branch', $id)->pluck('id');
+
+        // Get all branches where status is 1, excluding the main branch and its sub-branches
+        $branches = Branch::where('status', 1)
+                        ->where('id', '!=', $id) // Exclude the main branch itself
+                        ->whereNotIn('id', $subbranches) // Exclude sub-branches
+                        ->get();
 
         // Return the view with the company data
         return view('admin.configure.branch.edit_branch', compact('branch','branches'));
@@ -103,18 +106,18 @@ class BranchController extends Controller
         // Validate the incoming request
         $request->validate([
             'branch_name' => 'required|string|max:255',
-            'branch_code' => 'required|string|max:255',
+            'branch_code' => 'nullable|string|max:255',
             'parent_branch' => 'nullable|string|max:255',
-            'opening_time' => 'required|max:255',
-            'closing_time' => 'required|max:255',
-            'branch_address' => 'nullable|string|max:500',
+            'opening_time' => 'nullable|max:255',
+            'closing_time' => 'nullable|max:255',
+            'branch_address' => 'required|string|max:500',
             'branch_district' => 'nullable|string|max:255',
             'branch_zipcode' => 'nullable|string|max:10',
-            'contact_person_name' => 'required|string|max:15',
-            'branch_contact_number' => 'required|string|max:15',
+            'contact_person_name' => 'nullable|string|max:15',
+            'branch_contact_number' => 'nullable|string|max:15',
             'branch_land_line' => 'nullable|string|max:15',
-            'branch_whatsapp' => 'required|string|max:15',
-            'branch_email' => 'required|email|max:255',
+            'branch_whatsapp' => 'nullable|string|max:15',
+            'branch_email' => 'nullable|email|max:255',
             'branch_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status' => 'nullable|boolean',
         ]);

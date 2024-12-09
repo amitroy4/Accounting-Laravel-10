@@ -63,7 +63,7 @@
                                                     <div class="form-group custom-pUpdateing">
                                                         <label for="company_name">Company Name <span class="text-danger">*</span></label>
                                                         <input type="text" name="company_name" class="form-control" id="company_name"
-                                                            value="{{ old('company_name', $company->company_name) }}" placeholder="Company Name">
+                                                            value="{{ old('company_name', $company->company_name) }}" placeholder="Company Name" required>
                                                         @error('company_name')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -81,9 +81,9 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_address">Company Address</label>
+                                                        <label for="company_address">Company Address<span class="text-danger">*</span></label>
                                                         <input type="text" name="company_address" class="form-control" id="company_address"
-                                                            value="{{ old('company_address', $company->company_address) }}" placeholder="Company Address">
+                                                            value="{{ old('company_address', $company->company_address) }}" placeholder="Company Address" required>
                                                         @error('company_address')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -111,9 +111,9 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_id_numner">Company ID <span class="text-danger">*</span></label>
+                                                        <label for="company_id_numner">Company Code</label>
                                                         <input type="text" name="company_id_numner" class="form-control" id="company_id_numner"
-                                                            value="{{ old('company_id_numner', $company->company_id_numner) }}" placeholder="Company ID">
+                                                            value="{{ old('company_id_numner', $company->company_id_numner) }}" placeholder="Company Code">
                                                         @error('company_id_numner')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -121,7 +121,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_registration_number">Registration Number <span class="text-danger">*</span></label>
+                                                        <label for="company_registration_number">Registration Number</label>
                                                         <input type="text" name="company_registration_number" class="form-control" id="company_registration_number"
                                                             value="{{ old('company_registration_number', $company->company_registration_number) }}" placeholder="Registration Number">
                                                         @error('company_registration_number')
@@ -188,7 +188,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_contact_number">Contact Number <span class="text-danger">*</span></label>
+                                                        <label for="company_contact_number">Contact Number</label>
                                                         <input type="text" name="company_contact_number" class="form-control" id="company_contact_number"
                                                             value="{{ old('company_contact_number', $company->company_contact_number) }}" placeholder="Contact Number">
                                                         @error('company_contact_number')
@@ -208,7 +208,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_whatsapp_number">Whatsapp Number <span class="text-danger">*</span></label>
+                                                        <label for="company_whatsapp_number">Whatsapp Number</label>
                                                         <input type="text" name="company_whatsapp_number" class="form-control" id="company_whatsapp_number"
                                                             value="{{ old('company_whatsapp_number', $company->company_whatsapp_number) }}" placeholder="Whatsapp Number">
                                                         @error('company_whatsapp_number')
@@ -218,7 +218,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_email">Email Address <span class="text-danger">*</span></label>
+                                                        <label for="company_email">Email Address</label>
                                                         <input type="email" name="company_email" class="form-control" id="company_email"
                                                             value="{{ old('company_email', $company->company_email) }}" placeholder="Email Address">
                                                         @error('company_email')

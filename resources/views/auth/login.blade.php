@@ -124,7 +124,7 @@ License: For each use you must have a valid license purchased only from above li
                         <!--end::Back link-->
 
                         <!--begin::Sign Up link-->
-                        <div class="m-0">
+                        {{-- <div class="m-0">
                             <span class="text-gray-500 fw-bold fs-5 me-2" data-kt-translate="sign-in-head-desc">
                                 Not a Member yet?
                             </span>
@@ -133,7 +133,7 @@ License: For each use you must have a valid license purchased only from above li
                                 class="link-primary fw-bold fs-5" data-kt-translate="sign-in-head-link">
                                 Sign Up
                             </a>
-                        </div>
+                        </div> --}}
                         <!--end::Sign Up link--->
 
 
@@ -169,8 +169,8 @@ License: For each use you must have a valid license purchased only from above li
                                 <!--begin::Input group--->
                                 <div class="fv-row mb-8">
                                     <!--begin::userId-->
-                                    <label for="userId" class="form-label fw-bold">userId</label>
-                                    <input type="text" id="userId" placeholder="userId" name="userId" required autofocus autocomplete="off"
+                                    <label for="userId" class="form-label fw-bold">User Id</label>
+                                    <input type="text" id="userId" placeholder="User Id" name="userId" required autofocus autocomplete="off"
                                         data-kt-translate="sign-in-input-userId"
                                         class="form-control form-control-solid border-secondary" />
                                     <!--end::userId-->
@@ -201,7 +201,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <!--end::Wrapper-->
 
                                 <!--begin::Actions-->
-                                <div class="d-flex flex-stack">
+                                <div class="d-flex justify-content-center" >
                                     <!--begin::Submit-->
                                     <button id="kt_sign_in_submit" class="btn btn-primary me-2 flex-shrink-0">
                                         <!--begin::Indicator label-->

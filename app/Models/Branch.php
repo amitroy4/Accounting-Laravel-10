@@ -25,4 +25,20 @@ class Branch extends Model
         'branch_logo',
         'status',
     ];
+
+    /**
+     * Get the parent branch.
+     */
+    public function parentBranch()
+    {
+        return $this->belongsTo(Branch::class, 'parent_branch');
+    }
+
+    /**
+     * Get the child branches.
+     */
+    public function childBranches()
+    {
+        return $this->hasMany(Branch::class, 'parent_branch');
+    }
 }

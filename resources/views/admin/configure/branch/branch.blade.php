@@ -78,6 +78,11 @@
                                                                         style="width: 373.033px;" aria-sort="ascending"
                                                                         aria-label="Name: activate to sort column descending">
                                                                         Branch</th>
+                                                                    <th class="sorting_asc" tabindex="0"
+                                                                        aria-controls="add-row" rowspan="1" colspan="1"
+                                                                        style="width: 373.033px;" aria-sort="ascending"
+                                                                        aria-label="Name: activate to sort column descending">
+                                                                        Parent Branch</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 534.283px;"
@@ -102,9 +107,11 @@
                                                                     <td class=" d-flex align-items-center">
                                                                         <img src="{{ asset('storage/' . $branch->branch_logo) }}" alt="{{ $branch->branch_name }}" width="100">
                                                                         <div class=" ps-4">
-                                                                            Name: <b>{{$branch->branch_name}}</b> <br>
-                                                                            Code: {{$branch->branch_code}}
+                                                                           <b>{{$branch->branch_name}}</b> <br>
+                                                                            {{$branch->branch_code}}
                                                                         </div>
+                                                                    </td>
+                                                                    <td>{{ $branch->parentBranch ? $branch->parentBranch->branch_name : 'Main Branch' }}
                                                                     </td>
                                                                     <td>{{$branch->branch_address}},{{$branch->branch_district}}, {{$branch->branch_zipcode}}</td>
                                                                     <td>

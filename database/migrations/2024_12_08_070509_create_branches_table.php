@@ -14,21 +14,23 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->string('branch_name', 255);
-            $table->string('branch_code', 255);
-            $table->string('parent_branch', 255)->nullable();
-            $table->time('opening_time');
-            $table->time('closing_time');
-            $table->string('branch_address', 500)->nullable();
+            $table->string('branch_code', 255)->nullable();
+            $table->unsignedBigInteger('parent_branch')->nullable(); // Nullable for top-level branches
+            $table->time('opening_time')->nullable();
+            $table->time('closing_time')->nullable();
+            $table->string('branch_address', 500);
             $table->string('branch_district', 255)->nullable();
             $table->string('branch_zipcode', 10)->nullable();
             $table->boolean('status')->default(1);
-            $table->string('contact_person_name', 15);
-            $table->string('branch_contact_number', 15);
+            $table->string('contact_person_name', 15)->nullable();
+            $table->string('branch_contact_number', 15)->nullable();
             $table->string('branch_land_line', 15)->nullable();
-            $table->string('branch_whatsapp', 15);
-            $table->string('branch_email', 255);
+            $table->string('branch_whatsapp', 15)->nullable();
+            $table->string('branch_email', 255)->nullable();
             $table->string('branch_logo')->nullable();
             $table->timestamps();
+
+            $table->foreign('parent_branch')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 

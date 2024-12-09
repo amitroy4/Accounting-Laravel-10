@@ -63,7 +63,7 @@
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_name" name="branch_name"
-                                                            placeholder="Branch Name">
+                                                            placeholder="Branch Name" required>
                                                         @error('branch_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -71,8 +71,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
-                                                        <label for="largeInput">Branch Code <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="largeInput">Branch Code</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_code" name="branch_code"
                                                             placeholder="Branch Code" readonly>
@@ -99,8 +98,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group custom-padding">
-                                                        <label for="opening_time">Branch Opening Time<span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="opening_time">Branch Opening Time</label>
                                                         <input type="time" class="form-control" id="opening_time"
                                                             name="opening_time">
                                                         @error('opening_time')
@@ -110,8 +108,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group custom-padding">
-                                                        <label for="closing_time">Branch Closing Time<span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="closing_time">Branch Closing Time</label>
                                                         <input type="time" class="form-control" id="closing_time"
                                                             name="closing_time">
                                                         @error('closing_time')
@@ -121,10 +118,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_address">Branch Address</label>
+                                                        <label for="branch_address">Branch Address<span
+                                                            class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_address" name="branch_address"
-                                                            placeholder="Branch Address">
+                                                            placeholder="Branch Address" required>
                                                         @error('branch_address')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -202,8 +200,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="contact_person_name">Contact Person Name<span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="contact_person_name">Contact Person Name</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="contact_person_name" name="contact_person_name"
                                                             placeholder="Contact Person Name">
@@ -214,8 +211,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_contact_number">Branch Contact Number <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="branch_contact_number">Branch Contact Number</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_contact_number" name="branch_contact_number"
                                                             placeholder="Branch Contact Number">
@@ -237,8 +233,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_whatsapp">Branch Whatsapp Number <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="branch_whatsapp">Branch Whatsapp Number</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_whatsapp" name="branch_whatsapp"
                                                             placeholder="Branch Whatsapp Number">
@@ -249,8 +244,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_email">Branch Email Address <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="branch_email">Branch Email Address</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_email" name="branch_email"
                                                             placeholder="Branch Email Address">
@@ -286,7 +280,30 @@
                 $('#branchForm')[0].reportValidity(); // Show validation messages
             }
         });
-        $('#branch_code').val(generateRandomNumber());
+        // When the user types in the input field
+        $('#branch_name').on('keyup', function () {
+            var inputName = $('#branch_name').val(); // Get the value from input field
+            var currentYear = new Date().getFullYear(); // Get the current year (e.g., 2024)
+
+            // Check if the input has at least 3 characters
+
+            // Get the first 3 characters of the input name
+            var prefix = inputName.substring(0, 3).toUpperCase();
+
+            // Get the last two digits of the current year
+            var yearSuffix = currentYear.toString().slice(-2);
+
+            // Generate a random 3-digit number
+            var randomNumber = Math.floor(100 + Math.random() *
+            900); // Generate a number between 100 and 999
+
+            // Format the final result
+            var result = prefix + '-' + yearSuffix + randomNumber;
+
+            // Display the result in the <p> element
+            $('#branch_code').val(result);
+
+        });
     });
 
     // Handle file selection and preview

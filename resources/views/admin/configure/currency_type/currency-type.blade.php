@@ -55,28 +55,30 @@
                               <div class="row">
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Currency Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Currency Name">
+                                       <label for="currency_name">Currency Name <span class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="currency_name" name="currency_name" placeholder="Currency Name" required>
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Currency Short Name</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Currency Short Name">
+                                       <label for="currency_short_name">Currency Short Name</label>
+                                       <input type="text" class="form-control form-control" id="currency_short_name" name="currency_short_name" placeholder="Currency Short Name">
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
                                        <label for="defaultSelect">Country</label>
-                                       <select class="form-select form-control" id="defaultSelect">
-                                          <option>Active</option>
+                                       <select class="form-select form-control" id="country">
+                                        @foreach($countries as $code => $name)
+                                        <option value="{{ $code }}"> {{ $name }} ({{ $code }})</option>
+                                    @endforeach
                                        </select>
                                     </div>
                                  </div>
                                  <div class="col-12">
                                     <div class="form-group custom-padding">
-                                       <label for="largeInput">Currency ID</label>
-                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Currency ID">
+                                       <label for="largeInput">Currency Code</label>
+                                       <input type="text" class="form-control form-control" id="defaultInput" placeholder="Currency Code">
                                     </div>
                                  </div>
                                  <div class="col-12">

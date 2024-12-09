@@ -107,8 +107,8 @@
                                                                     <td class=" d-flex align-items-center">
                                                                         <img src="{{ asset('storage/' . $company->company_logo) }}" alt="{{ $company->company_name }}" width="100">
                                                                         <div class=" ps-4">
-                                                                            Name: <b>{{$company->company_name}}</b> <br>
-                                                                            ID: {{$company->company_code}}
+                                                                            <b>{{$company->company_name}}</b> <br>
+                                                                           {{$company->company_code}}
                                                                         </div>
                                                                     </td>
                                                                     <td>{{$company->company_short_name}}</td>

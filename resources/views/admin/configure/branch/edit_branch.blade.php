@@ -51,7 +51,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
                                                         <label for="branch_name">Branch Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="branch_name" name="branch_name" placeholder="Branch Name" value="{{ $branch->branch_name }}">
+                                                        <input type="text" class="form-control" id="branch_name" name="branch_name" placeholder="Branch Name" value="{{ $branch->branch_name }}" required>
                                                         @error('branch_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -59,7 +59,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_code">Branch Code <span class="text-danger">*</span></label>
+                                                        <label for="branch_code">Branch Code</label>
                                                         <input type="text" class="form-control" id="branch_code" name="branch_code" placeholder="Branch Code" value="{{ $branch->branch_code }}" readonly>
                                                         @error('branch_code')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group custom-padding">
-                                                        <label for="opening_time">Branch Opening Time <span class="text-danger">*</span></label>
+                                                        <label for="opening_time">Branch Opening Time</label>
                                                         <input type="time" class="form-control" id="opening_time" name="opening_time" value="{{ $branch->opening_time }}">
                                                         @error('opening_time')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -94,7 +94,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group custom-padding">
-                                                        <label for="closing_time">Branch Closing Time <span class="text-danger">*</span></label>
+                                                        <label for="closing_time">Branch Closing Time</label>
                                                         <input type="time" class="form-control" id="closing_time" name="closing_time" value="{{ $branch->closing_time }}">
                                                         @error('closing_time')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -103,8 +103,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_address">Branch Address</label>
-                                                        <input type="text" class="form-control" id="branch_address" name="branch_address" placeholder="Branch Address" value="{{ $branch->branch_address }}">
+                                                        <label for="branch_address">Branch Address<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="branch_address" name="branch_address" placeholder="Branch Address" value="{{ $branch->branch_address }}" required>
                                                         @error('branch_address')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -177,7 +177,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="contact_person_name">Contact Person Name<span class="text-danger">*</span></label>
+                                                        <label for="contact_person_name">Contact Person Name</label>
                                                         <input type="text" class="form-control" id="contact_person_name" name="contact_person_name" placeholder="Contact Person Name" value="{{ $branch->contact_person_name }}">
                                                         @error('contact_person_name')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -186,7 +186,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_contact_number">Branch Contact Number <span class="text-danger">*</span></label>
+                                                        <label for="branch_contact_number">Branch Contact Number</label>
                                                         <input type="text" class="form-control" id="branch_contact_number" name="branch_contact_number" placeholder="Branch Contact Number" value="{{ $branch->branch_contact_number }}">
                                                         @error('branch_contact_number')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -206,8 +206,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_whatsapp">Branch Whatsapp Number <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="branch_whatsapp">Branch Whatsapp Number</label>
                                                         <input type="text" class="form-control form-control"
                                                             id="branch_whatsapp" name="branch_whatsapp"
                                                             placeholder="Branch Whatsapp Number" value="{{ $branch->branch_whatsapp}}">
@@ -218,7 +217,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group custom-padding">
-                                                        <label for="branch_email">Branch Email<span class="text-danger">*</span></label>
+                                                        <label for="branch_email">Branch Email</label>
                                                         <input type="email" class="form-control" id="branch_email" name="branch_email" placeholder="Branch Email" value="{{ $branch->branch_email }}">
                                                         @error('branch_email')
                                                         <span class="text-danger">{{ $message }}</span>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Monarobase\CountryList\CountryListFacade as Countries;
 
 class CurrencyTypeController extends Controller
 {
@@ -11,7 +12,8 @@ class CurrencyTypeController extends Controller
      */
     public function index()
     {
-        return view('admin.configure.currency_type.currency-type');
+        $countries = Countries::getList('en'); // Retrieve countries in English
+        return view('admin.configure.currency_type.currency-type', compact('countries'));
     }
 
     /**
