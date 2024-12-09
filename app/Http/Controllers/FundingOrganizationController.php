@@ -109,7 +109,11 @@ class FundingOrganizationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $countries = Countries::getList('en');
+        $fundingorganization = FundingOrganization::with('fundingorganizationdocument')->findOrFail($id);
+        $documents = FundingOrganizationDocument::where('funding_organization_id', $id)->get();
+
+        return view('admin.configure.funding_organization.edit',compact('countries','fundingorganization','documents'));
     }
 
     /**
@@ -117,7 +121,32 @@ class FundingOrganizationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'funding_organization_name' => 'required|string|max:255',
+            'organization_address' => 'required|string|max:500',
+            'organization_code' => 'nullable|string|max:50',
+            'country' => 'nullable|string|max:10',
+            'donor_type' => 'nullable|string|max:10',
+            'organization_contact_number' => 'nullable|string|max:15',
+            'organization_email' => 'nullable|email|max:255',
+            'organization_website' => 'nullable|string|max:255',
+            'status' => 'nullable|boolean',
+            'contact_person_name' => 'nullable|string|max:255',
+            'contact_person_designation' => 'nullable|string|max:255',
+            'contact_person_number' => 'nullable|string|max:15',
+            'contact_person_whatsapp_number' => 'nullable|string|max:15',
+            'contact_person_email' => 'nullable|email|max:255',
+        ]);
+
+        // Find the FundingOrganization by its ID
+        $fundingOrganization = FundingOrganization::findOrFail($id);
+
+        // Update the funding organization data with validated input
+        $fundingOrganization->update($validatedData);
+
+        // Redirect back with a success message
+        return redirect()->route('funding_organization.index')->with('success', 'Funding Organization updated successfully.');
     }
 
     /**
@@ -154,4 +183,23 @@ class FundingOrganizationController extends Controller
         return redirect()->back()->with('success', 'Status Changed successfully!');
 
     }
+
+    public function filesdelete(string $id)
+    {
+        // Find the file by ID
+        $file = FundingOrganizationDocument::findOrFail($id);
+
+        // Ensure the file path exists before attempting to delete
+        if (!empty($file->file_path) && Storage::disk('public')->exists($file->file_path)) {
+            // Delete the file from storage
+            Storage::disk('public')->delete($file->file_path);
+        }
+
+        // Optionally, you may want to delete the record from the database if required
+        $file->delete();
+
+        // Return success response for AJAX
+        return response()->json(['message' => 'File deleted successfully.']);
+    }
+
 }
