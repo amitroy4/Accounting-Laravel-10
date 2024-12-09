@@ -59,8 +59,9 @@
                               <div class="row">
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="funding_organization_name">Funding Organization Name</label>
-                                       <input type="text" class="form-control form-control" id="funding_organization_name" name="funding_organization_name" placeholder="Funding Organization Name">
+                                       <label for="funding_organization_name">Funding Organization Name <span
+                                        class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="funding_organization_name" name="funding_organization_name" placeholder="Funding Organization Name" required>
                                        @error('funding_organization_name')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -87,8 +88,9 @@
                                  </div>
                                  <div class="col-md-6">
                                     <div class="form-group custom-padding">
-                                       <label for="organization_address">Organization Address</label>
-                                       <input type="text" class="form-control form-control" id="organization_address" name="organization_address" placeholder="Organization Address">
+                                       <label for="organization_address">Organization Address <span
+                                        class="text-danger">*</span></label>
+                                       <input type="text" class="form-control form-control" id="organization_address" name="organization_address" placeholder="Organization Address" required>
                                        @error('organization_address')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
