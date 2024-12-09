@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/project_category/activeordeactive/{Id}', [ProjectCategoryController::class,'activeordeactive'])->name('project_category.activeordeactive');
     Route::resource('/dashboard/funding_organization', FundingOrganizationController::class);
     Route::resource('/dashboard/currency_type', CurrencyTypeController::class);
+    Route::get('/dashboard/currency_type/activeordeactive/{Id}', [CurrencyTypeController::class,'activeordeactive'])->name('currency_type.activeordeactive');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
