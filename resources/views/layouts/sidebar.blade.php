@@ -1,4 +1,4 @@
-<!-- Sidebar -->
+        <!-- Sidebar -->
 		<div class="sidebar sidebar-style-2">
 			<div class="sidebar-logo">
 				<!-- Logo Header -->
