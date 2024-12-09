@@ -91,7 +91,10 @@ class CurrencyTypeController extends Controller
         $currencytype = 0;
 
         // Redirect back with success message
-        return view('admin.configure.currency_type.currency-type',compact('countries','currencytype','currencytypes'));
+        session()->flash('success', 'Currency Type Updated successfully!');
+
+        return view('admin.configure.currency_type.currency-type', compact('countries', 'currencytype', 'currencytypes'));
+
 
     }
 
