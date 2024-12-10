@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/funding_organization', FundingOrganizationController::class);
     Route::get('/dashboard/funding_organization/activeordeactive/{Id}', [FundingOrganizationController::class,'activeordeactive'])->name('funding_organization.activeordeactive');
     Route::delete('/dashboard/funding_organization/files/delete/{id}', [FundingOrganizationController::class,'filesdelete'])->name('funding_organization.filesdelete');
-    Route::post('/dashboard/funding_organization/files/upload/{id}', [FundingOrganizationController::class, 'addFile'])->name('funding_organization.addfile');
+    Route::post('/dashboard/funding_organization/files/upload', [FundingOrganizationController::class, 'addFile'])->name('funding_organization.addfile');
     Route::resource('/dashboard/currency_type', CurrencyTypeController::class);
     Route::get('/dashboard/currency_type/activeordeactive/{Id}', [CurrencyTypeController::class,'activeordeactive'])->name('currency_type.activeordeactive');
 });

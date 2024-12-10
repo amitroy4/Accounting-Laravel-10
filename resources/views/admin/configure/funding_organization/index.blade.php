@@ -136,7 +136,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        <div class="form-button-action">
+                                                                        <div class="form-button-action align-items-center">
                                                                             <a
                                                                                 href="{{route('funding_organization.edit',$funding_organization->id)}}">
                                                                                 <button type="button"
@@ -163,19 +163,15 @@
                                                                                 <button type="button"
                                                                                     class="addFileButton btn btn-link btn-primary btn-lg"
                                                                                     data-id="{{ $funding_organization->id }}"
-                                                                                    data-bs-toggle="tooltip"
                                                                                     title="Add File"
-                                                                                    data-original-title="Add File">
+                                                                                    data-original-title="Add File"
+                                                                                    data-bs-target="#fileUploadModal"
+                                                                                    data-bs-toggle="modal">
                                                                                     <i class="fa fa-file"
                                                                                         aria-hidden="true"></i>
                                                                                 </button>
                                                                             </a>
 
-                                                                            <!-- Hidden File Input -->
-                                                                            <input type="file" class="fileInput"
-                                                                                name="files[]" multiple
-                                                                                style="display: none;"
-                                                                                data-id="{{ $funding_organization->id }}">
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -192,6 +188,44 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileUploadModalLabel">Document Upload</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{route('funding_organization.addfile')}}" id="fundingOrganizationForm" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="text" id="organization_code" name="organization_code" style="display: none;">
+                        <div class="col-md-12">
+                            <div class="form-group custom-padding">
+                                <label for="organization_documents" class="form-label">Documents</label>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    id="organization_documents"
+                                    name="organization_documents[]"
+                                    multiple>
+                            </div>
+                            <div id="preview-container" class="mt-3 row g-1">
+                                <!-- Previews will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -218,39 +252,66 @@
         });
     }
 
-    // Trigger the file input when the corresponding button is clicked
+    // // Trigger the file input when the corresponding button is clicked
     $(document).on('click', '.addFileButton', function () {
         let fundingOrganizationId = $(this).data('id'); // Get the organization ID from the button
-        $('.fileInput[data-id="' + fundingOrganizationId + '"]').click(); // Trigger the corresponding file input
+        $('#organization_code').val(fundingOrganizationId);
+        // $('.fileInput[data-id="' + fundingOrganizationId + '"]').click(); // Trigger the corresponding file input
     });
 
-    // Handle file selection and upload
-    $(document).on('change', '.fileInput', function () {
-        let fundingOrganizationId = $(this).data('id'); // Get the organization ID
-        let formData = new FormData();
-        let files = $(this)[0].files;
 
-        // Append files to FormData
-        for (let i = 0; i < files.length; i++) {
-            formData.append('files[]', files[i]);
-        }
+    $(document).ready(function () {
+        let selectedFiles = []; // Array to manage selected files
 
-        // Perform AJAX request
-        $.ajax({
-            url: '/dashboard/funding_organization/files/upload/' + fundingOrganizationId, // Dynamic URL with ID
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token to the request headers
-            },
-            success: function (response) {
-                swal("File Uploaded Successfully!", "Press Ok!", "success")
-            },
-            error: function (error) {
-                swal("File Upload Not Successful.");
-            }
+        // When files are selected
+        $('#organization_documents').on('change', function (e) {
+            const files = Array.from(e.target.files); // Convert FileList to an Array
+            const previewContainer = $('#preview-container');
+            previewContainer.empty(); // Clear existing previews
+
+            selectedFiles = files; // Update selected files array
+
+            // Loop through files to generate previews
+            files.forEach((file, index) => {
+                const fileType = file.type;
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    let preview = '';
+
+                    // Check file type and generate appropriate preview
+                    if (fileType.startsWith('image/')) {
+                        preview = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`;
+                    } else if (fileType === 'application/pdf') {
+                        preview = `<embed src="${e.target.result}" type="application/pdf" class="border" style="width: 100px; height: 100px;">`;
+                    } else {
+                        preview = `<div class="alert alert-secondary p-2" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">${file.name}</div>`;
+                    }
+
+                    // Append preview with a remove button
+                    previewContainer.append(`
+                        <div class="col-md-3 text-center position-relative">
+                            ${preview}
+                            <button type="button" class="btn btn-sm btn-danger remove-btn position-absolute top-0 end-1 m-1" data-index="${index}">&times;</button>
+                        </div>
+                    `);
+                };
+
+                reader.readAsDataURL(file); // Read file for preview
+            });
+        });
+
+        // Remove a file from the selection
+        $(document).on('click', '.remove-btn', function () {
+            const index = $(this).data('index'); // Get file index
+            selectedFiles.splice(index, 1); // Remove file from array
+
+            // Update the input files
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach((file) => dataTransfer.items.add(file));
+            $('#organization_documents')[0].files = dataTransfer.files;
+
+            $(this).parent().remove(); // Remove the preview
         });
     });
 

@@ -202,25 +202,25 @@ class FundingOrganizationController extends Controller
         return response()->json(['message' => 'File deleted successfully.']);
     }
 
-    public function addfile(Request $request, $id)
+    public function addfile(Request $request)
     {
 
         // dd($request->all());
         // Validate the incoming request
         $request->validate([
-            'files.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048', // Adjust MIME types and size as needed
+            'organization_documents.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048', // Adjust MIME types and size as needed
         ]);
 
 
 
-         if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
+         if ($request->hasFile('organization_documents')) {
+            foreach ($request->file('organization_documents') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('uploads/fundingorganizationdocuments', $fileName, 'public');
 
 
                 FundingOrganizationDocument::create([
-                    'funding_organization_id' => $id, // Use the ID of the saved funding organization
+                    'funding_organization_id' => $request->organization_code, // Use the ID of the saved funding organization
                     'file_name' => $fileName,
                     'file_path' => $filePath,
                 ]);
