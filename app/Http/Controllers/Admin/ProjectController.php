@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\CurrencyType;
+use App\Models\FundingOrganization;
+use App\Models\ProjectCategory;
 
 class ProjectController extends Controller
 {
@@ -11,7 +15,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('admin.configure.project.project');
+        return view('admin.configure.project.index');
     }
 
     /**
@@ -19,7 +23,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $project_categories = ProjectCategory::where('status',1)->get();
+        $currency_types = CurrencyType::where('status',1)->get();
+        $funding_organizations = FundingOrganization::where('status',1)->get();
+        return view('admin.configure.project.create',compact('project_categories','currency_types','funding_organizations'));
     }
 
     /**

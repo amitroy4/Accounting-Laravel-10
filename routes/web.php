@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\CurrencyTypeController;
 use App\Http\Controllers\Admin\ChartOfAccountController;
-use App\Http\Controllers\CurrencyTypeController;
-use App\Http\Controllers\ProjectCategoryController;
-use App\Http\Controllers\FundingOrganizationController;
+use App\Http\Controllers\Admin\ProjectCategoryController;
+use App\Http\Controllers\Admin\FundingOrganizationController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/funding_organization/files/upload', [FundingOrganizationController::class, 'addFile'])->name('funding_organization.addfile');
     Route::resource('/dashboard/currency_type', CurrencyTypeController::class);
     Route::get('/dashboard/currency_type/activeordeactive/{Id}', [CurrencyTypeController::class,'activeordeactive'])->name('currency_type.activeordeactive');
+
+
+    Route::resource('/dashboard/project', ProjectController::class);
+    Route::get('/dashboard/project/activeordeactive/{Id}', [ProjectController::class,'activeordeactive'])->name('project.activeordeactive');
+    Route::delete('/dashboard/project/files/delete/{id}', [ProjectController::class,'filesdelete'])->name('project.filesdelete');
+    Route::post('/dashboard/project/files/upload', [ProjectController::class, 'addFile'])->name('project.addfile');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
