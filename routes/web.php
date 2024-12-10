@@ -1,13 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\CurrencyTypeController;
-use App\Http\Controllers\FundingOrganizationController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\ProjectController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ChartOfAccountController;
+use App\Http\Controllers\CurrencyTypeController;
+use App\Http\Controllers\ProjectCategoryController;
+use App\Http\Controllers\FundingOrganizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    //
+
+
+    Route::resource('/chart-of-account',ChartOfAccountController::class);
+
     Route::resource('/dashboard/company', CompanyController::class);
     Route::get('/dashboard/company/activeordeactive/{Id}', [CompanyController::class,'activeordeactive'])->name('company.activeordeactive');
 

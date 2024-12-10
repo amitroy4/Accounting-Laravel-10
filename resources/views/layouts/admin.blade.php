@@ -18,8 +18,7 @@
                 "families": ["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands",
                     "simple-line-icons"
                 ],
-                urls: ['{{asset('
-                    admin ')}}/assets/css/fonts.min.css'
+                urls: ['{{asset('admin')}}/assets/css/fonts.min.css'
                 ]
             },
             active: function () {
@@ -356,7 +355,7 @@
                 </nav>
                 <!-- End Navbar -->
             </div>
-            
+
 
             @yield('content')
 
@@ -594,8 +593,7 @@
         $(document).ready(function () {
             $.notify({
                 // Options
-                message: '{{ session('
-                success ') }}'
+                message: '{{ session('success') }}'
             }, {
                 // Settings
                 type: 'success',
@@ -616,8 +614,7 @@
         $(document).ready(function () {
             $.notify({
                 // Options
-                message: '{{ session('
-                danger ') }}'
+                message: '{{ session('danger') }}'
             }, {
                 // Settings
                 type: 'danger',
