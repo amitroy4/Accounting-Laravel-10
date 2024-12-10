@@ -1,4 +1,4 @@
-<!-- Sidebar -->
+        <!-- Sidebar -->
 		<div class="sidebar sidebar-style-2">
 			<div class="sidebar-logo">
 				<!-- Logo Header -->
@@ -86,7 +86,7 @@
 						<!--Dashboard Menue-->
 						<!--Chart of Accounts Menue-->
 						<li class="nav-item">
-							<a href="chart-of-accounts.php">
+							<a href="{{route('chart-of-account.index')}}">
 								<i class="fas fa-sitemap"></i>
 								<p>Chart of Accounts</p>
 							</a>

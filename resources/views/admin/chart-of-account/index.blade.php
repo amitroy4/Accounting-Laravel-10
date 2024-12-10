@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Dashboard')
+@section('title','Master COA')
 @section('content')
 <div class="container">
    <div class="page-inner">

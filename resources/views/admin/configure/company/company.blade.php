@@ -127,22 +127,31 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-button-action">
-                                                                            <a href="{{route('company.edit',$company->id)}}">
-                                                                                <button type="button"
+                                                                            <a href="{{route('company.edit',$company->id)}}"
                                                                                 data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
+                                                                                class="btn btn-link btn-primary "
                                                                                 data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
+                                                                                <i class="fas fa-edit"></i>
                                                                             </a>
-                                                                            <form action="{{ route('company.destroy', $company->id) }}" method="POST" style="display:inline;"  onsubmit="event.preventDefault(); confirmDelete(this);">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                                <button type="submit" data-bs-toggle="tooltip" title="Remove" class="btn btn-link btn-danger">
-                                                                                    <i class="fa fa-times"></i>
-                                                                                </button>
-                                                                            </form>
+                                                                            <!-- Delete Button -->
+                                                                            <a href="#"
+                                                                                class="btn btn-link btn-danger delete-btn"
+                                                                                data-form-id="delete-form-{{ $company->id }}"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="Remove">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
+
+
                                                                         </div>
+                                                                        <!-- Delete Form -->
+                                                                        <form id="delete-form-{{ $company->id }}"
+                                                                            action="{{ route('company.destroy', $company->id) }}"
+                                                                            method="POST"
+                                                                            style="display: none;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                        </form>
                                                                     </td>
                                                                 </tr>
                                                                 @endforeach
@@ -167,21 +176,29 @@
 @endsection
 @push('script')
 <script>
-    function confirmDelete(form) {
-        swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this data!",
-            icon: "warning",
-            buttons: ["Cancel", "Yes, delete it!"],
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                form.submit();
-                swal("Deleted!", "Company has been deleted.", "success");
-            } else {
-                swal("Your data is safe!");
-            }
+    $(document).ready(function () {
+        // Attach click event to delete buttons
+        $('.delete-btn').on('click', function (e) {
+            e.preventDefault();
+
+            const formId = $(this).data('form-id');
+            const form = $('#' + formId);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this data!",
+                icon: "warning",
+                buttons: ["Cancel", "Yes, delete it!"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Deleted!", "The record has been deleted.", "success");
+                } else {
+                    swal("Your data is safe!");
+                }
+            });
         });
-    }
+    });
 </script>
 @endpush
