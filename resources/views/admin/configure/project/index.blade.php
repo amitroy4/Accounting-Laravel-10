@@ -78,22 +78,22 @@
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 373.033px;" aria-sort="ascending"
                                                                         aria-label="Name: activate to sort column descending">
-                                                                        Project</th>
+                                                                        Project Name</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 534.283px;"
                                                                         aria-label="Position: activate to sort column ascending">
-                                                                        Country</th>
+                                                                        Short Name</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
                                                                         aria-label="Office: activate to sort column ascending">
-                                                                        Address</th>
+                                                                        Parent Project</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
                                                                         aria-label="Office: activate to sort column ascending">
-                                                                        Email</th>
+                                                                        Project Budget</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
@@ -107,19 +107,16 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {{-- @foreach ($projects as $key => $project)
+                                                                @foreach ($projects as $key => $project)
                                                                 <tr role="row" class="odd">
                                                                     <td>{{$key+1}}</td>
-                                                                    <td>
-                                                                        {{$project->project_name}}
-                                                                        <br>
-                                                                        {{$project->organization_code}}
+                                                                    <td><b>{{$project->project_name}}</b></td>
+                                                                    <td><b>{{$project->project_short_name}}</b> <br>
+                                                                        {{$project->project_code}}
                                                                     </td>
-                                                                    <td>{{$countries[$project->country] ?? 'Unknown Country'}}
+                                                                    <td>{{$project->parentProject?$project->parentProject->project_name:'N/A'}}
                                                                     </td>
-                                                                    <td>{{$project->organization_address}}
-                                                                    </td>
-                                                                    <td>{{$project->organization_email}}
+                                                                    <td>{{$project->project_budget}}
                                                                     </td>
                                                                     <td>
                                                                         @if ($project->status==1)
@@ -174,7 +171,7 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-                                                                @endforeach --}}
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>

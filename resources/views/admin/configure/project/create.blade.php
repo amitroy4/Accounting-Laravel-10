@@ -48,6 +48,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
+                                <form action="{{route('project.store')}}" id="projectForm" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
                                 <div class="card custom-c-bg1">
                                     <div class="card-header custom-c-h-bg1">
                                         <h4 class="custom-c-h-title">Project Information</h4>
@@ -90,9 +93,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group custom-padding">
-                                                    <label for="defaultSelect">Parent Project</label>
-                                                    <select class="form-select form-control" id="defaultSelect">
-                                                        <option>Project-1</option>
+                                                    <label for="parent_project">Parent Project</label>
+                                                    <select class="form-select form-control" id="parent_project" name="parent_project_id">
+                                                        @foreach ($projects as $project)
+                                                        <option value="{{$project->id}}">{{$project->project_name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -152,28 +157,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 is-core-yes" style="display: none;">
-                                                <div class="form-group custom-padding ">
-                                                    <label>Start Date</label>
-                                                    <div class="input-group">
-                                                        <input type="date" class="form-control" id="start_date"
-                                                            name="start_date">
-                                                        <span class="input-group-text">
-                                                            <i class="fa fa-calendar-check"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 is-core-yes" style="display: none;">
-                                                <div class="form-group custom-padding">
-                                                    <label for="status">Status</label>
-                                                    <select class="form-select form-control" id="status" name="status">
-                                                        <option value="1">Yes</option>
-                                                        <option value="0">No</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 is-core-no" style="display: none;">
+                                            <div class="col-md-4">
                                                 <div class="form-group custom-padding">
                                                     <label>Project Start Date</label>
                                                     <div class="input-group">
@@ -263,7 +247,7 @@
                                                     <!-- Previews will be displayed here -->
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 is-core-no" style="display: none;">
+                                            <div class="col-md-4">
                                                 <div class="form-group custom-padding">
                                                     <label for="status">Status</label>
                                                     <select class="form-select form-control" id="status" name="status">
@@ -310,6 +294,7 @@
 
                                     </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -323,7 +308,12 @@
 @push('script')
 <script>
     $(document).ready(function () {
-        
+
+        $('.submit-btn').on('click', function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+            $('#projectForm').submit(); // Use the native submit method
+        });
+
         $('#project_budget').on('input', function () {
             let value = $(this).val();
             if (value < 0) {
@@ -387,8 +377,8 @@
             <div class="row mt-3 align-items-center">
                 <div class="col-md-5">
                     <div class="form-group custom-padding">
-                        <label for="funding_organization">Funding Organization</label>
-                        <select class="form-select form-control" name="funding_organization[]">
+                        <label for="funding_organization_id">Funding Organization</label>
+                        <select class="form-select form-control" name="funding_organization_id[]">
                             @foreach ($funding_organizations as $funding_organization)
                             <option value="{{$funding_organization->id}}">
                                 {{$funding_organization->funding_organization_name}}
