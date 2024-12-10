@@ -10795,8 +10795,9 @@ body[data-background-color=dark] .jvm-zoom-btn {
 .double-buttons a{
     display: inline-block;
     text-transform: uppercase;
-    min-width: 125px;
+    min-width: auto;
     text-align: center;
+    padding: 0 20px;
 }
 
 .double-buttons .or{
@@ -10831,6 +10832,22 @@ body[data-background-color=dark] .jvm-zoom-btn {
     color: #332941!important;
 }
 .submit-btn:hover{
+    background: #9BCF53;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600 !important;
+    color:#fff;
+}
+.update-btn{
+    background: #9BCF53;
+    opacity: 0.85;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 500 !important;
+    line-height: 40px;
+    color: #332941!important;
+}
+.update-btn:hover{
     background: #9BCF53;
     opacity: 1;
     font-size: 14px;

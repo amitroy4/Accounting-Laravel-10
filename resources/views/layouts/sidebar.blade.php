@@ -86,7 +86,7 @@
 						<!--Dashboard Menue-->
 						<!--Chart of Accounts Menue-->
 						<li class="nav-item">
-							<a href="{{route('chart-of-account.index')}}">
+							<a href="{{route('chart-of-accounts.index')}}">
 								<i class="fas fa-sitemap"></i>
 								<p>Chart of Accounts</p>
 							</a>

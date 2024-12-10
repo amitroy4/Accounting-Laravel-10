@@ -20,7 +20,7 @@ class ChartOfAccountController extends Controller
                             ->where('is_active',1)
                             ->where('parent_coa_id',null)
                             ->get();
-        // dd($companies);
+        // dd($chart_of_accounts);
         return view('admin.chart-of-account.index',compact('companies','parent_heads','chart_of_accounts'));
     }
 
@@ -37,7 +37,26 @@ class ChartOfAccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'company_id'=> 'required|exists:companies,id',
+            // 'project_id'=> 'required|exists:projects,id',
+            'account_name'=> 'string|required',
+        ]);
+
+        // dd($request->all());
+        $account = new ChartOfAccount();
+        // $account->account_id = $request->account_id;
+        $account->company_id = $request->company_id;
+        $account->account_name = $request->account_name;
+        $account->parent_coa_id = $request->parent_coa_id ?? null;
+        $account->has_leaf = $request->has_leaf ?? 0;
+        $account->created_by = auth()->user()->id;
+        $account->save();
+        // dd($account);
+
+        return redirect()->back()->with('success','New account created successfully.');
+
     }
 
     /**
@@ -53,7 +72,8 @@ class ChartOfAccountController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $chart_of_accounts = ChartOfAccount::find($id);
+        return response()->json($chart_of_accounts);
     }
 
     /**
@@ -61,7 +81,7 @@ class ChartOfAccountController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($id,$request->all());
     }
 
     /**

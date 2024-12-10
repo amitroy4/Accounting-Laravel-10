@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::resource('/chart-of-account',ChartOfAccountController::class);
+    Route::resource('/chart-of-accounts',ChartOfAccountController::class);
 
     Route::resource('/dashboard/company', CompanyController::class);
     Route::get('/dashboard/company/activeordeactive/{Id}', [CompanyController::class,'activeordeactive'])->name('company.activeordeactive');
