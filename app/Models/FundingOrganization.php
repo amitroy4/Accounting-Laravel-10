@@ -29,4 +29,8 @@ class FundingOrganization extends Model
     {
         return $this->hasMany(FundingOrganizationDocument::class);
     }
+    public function projectFunding()
+    {
+        return $this->belongsTo(ProjectFunding::class);
+    }
 }
