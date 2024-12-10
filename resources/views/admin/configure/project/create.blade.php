@@ -123,7 +123,7 @@
                                                     <label for="project_budget">Project Budget</label>
                                                     <input type="number" class="form-control form-control"
                                                         id="project_budget" name="project_budget"
-                                                        placeholder="Project Budget">
+                                                        placeholder="Project Budget" min="0">
                                                     @error('project_budget')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -250,13 +250,13 @@
                                             </style>
                                              <div class="col-md-4 is-core-no" style="display: none;">
                                                 <div class="form-group custom-padding">
-                                                    <label for="project_documents" class="form-label">Project Documents</label>
+                                                    <label for="approval_documents" class="form-label">Approval Documents</label>
                                                     <input
                                                         type="file"
                                                         class="form-control"
-                                                        id="project_documents"
-                                                        name="project_documents[]"
-                                                        placeholder="Project Documents"
+                                                        id="approval_documents"
+                                                        name="approval_documents[]"
+                                                        placeholder="Approval Documents"
                                                         multiple>
                                                 </div>
                                                 <div id="preview-container" class="mt-3 row g-3">
@@ -323,6 +323,13 @@
 @push('script')
 <script>
     $(document).ready(function () {
+        
+        $('#project_budget').on('input', function () {
+            let value = $(this).val();
+            if (value < 0) {
+                $(this).val(0); // Set the value to 0 if it's negative
+            }
+        });
 
         // When the user types in the input field
         $('#project_name').on('keyup', function () {
@@ -374,12 +381,11 @@
 
     $(document).ready(function () {
     const totalAmount = $('#project_budget').val(); // Define your total amount here
-
     // Add Row Button Click Event
     $('#add-row-btn').click(function () {
         let newRow = `
-            <div class="row mt-3">
-                <div class="col-md-6">
+            <div class="row mt-3 align-items-center">
+                <div class="col-md-5">
                     <div class="form-group custom-padding">
                         <label for="funding_organization">Funding Organization</label>
                         <select class="form-select form-control" name="funding_organization[]">
@@ -403,10 +409,16 @@
                         <input type="text" class="form-control funded-amount" name="funded_amount[]" placeholder="Funded Amount" readonly>
                     </div>
                 </div>
+                <div class="col-md-1 text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-row">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>`;
         $('#funding-rows-container').append(newRow);
     });
 
+    // Keyup event for funded percentage
     $(document).on('keyup', '.funded-percentage', function () {
         let row = $(this).closest('.row'); // Find the current row
         let projectBudget = parseFloat($('#project_budget').val()) || 0; // Get the project budget (default to 0 if invalid)
@@ -468,6 +480,11 @@
             $('.or').show();
         }
     });
+
+    // Remove Row Button Click Event
+    $(document).on('click', '.remove-row', function () {
+        $(this).closest('.row').remove(); // Remove the closest row
+    });
 });
 
 
@@ -475,7 +492,7 @@ $(document).ready(function () {
         let selectedFiles = []; // Array to manage selected files
 
         // When files are selected
-        $('#project_documents').on('change', function (e) {
+        $('#approval_documents').on('change', function (e) {
             const files = Array.from(e.target.files); // Convert FileList to an Array
             const previewContainer = $('#preview-container');
             previewContainer.empty(); // Clear existing previews
@@ -520,7 +537,7 @@ $(document).ready(function () {
             // Update the input files
             const dataTransfer = new DataTransfer();
             selectedFiles.forEach((file) => dataTransfer.items.add(file));
-            $('#project_documents')[0].files = dataTransfer.files;
+            $('#approval_documents')[0].files = dataTransfer.files;
 
             $(this).parent().remove(); // Remove the preview
         });
