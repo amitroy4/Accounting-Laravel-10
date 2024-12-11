@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 
 use App\Models\FundingOrganization;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FundingOrganizationDocument;
 use Monarobase\CountryList\CountryListFacade as Countries;

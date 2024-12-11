@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\CurrencyType;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Monarobase\CountryList\CountryListFacade as Countries;
 
 class CurrencyTypeController extends Controller

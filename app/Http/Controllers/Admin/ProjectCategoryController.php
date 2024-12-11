@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\ProjectCategory;
+use App\Http\Controllers\Controller;
 
 class ProjectCategoryController extends Controller
 {

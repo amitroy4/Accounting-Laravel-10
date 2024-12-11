@@ -294,7 +294,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <div class="form-button-action">
+                                                            <div class="form-button-action align-items-center">
                                                                 <a
                                                                     href="{{route('currency_type.edit',$currency_type->id)}}">
                                                                     <button type="button"
