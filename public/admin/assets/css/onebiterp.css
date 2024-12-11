@@ -10854,6 +10854,22 @@ body[data-background-color=dark] .jvm-zoom-btn {
     font-weight: 600 !important;
     color:#fff;
 }
+.delete-btn{
+    background: #ff4747;
+    opacity: 0.85;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 500 !important;
+    line-height: 40px;
+    color: #332941!important;
+}
+.delete-btn:hover{
+    background: #ff4747;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600 !important;
+    color:#fff;
+}
 .cancel-btn{
     background: #FFA447;
     opacity: 0.85;

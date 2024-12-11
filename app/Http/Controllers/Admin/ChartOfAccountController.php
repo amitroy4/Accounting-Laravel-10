@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChartOfAccount;
 use App\Models\Company;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ChartOfAccountController extends Controller
@@ -15,13 +16,14 @@ class ChartOfAccountController extends Controller
     public function index()
     {
         $companies = Company::where('status',1)->get();
+        $projects = Project::where('status',1)->get();
         $parent_heads = ChartOfAccount::where('is_active',1)->where('has_leaf',0)->get();
         $chart_of_accounts = ChartOfAccount::with('child_account.child_account.child_account.child_account.child_account.child_account.child_account.child_account')
                             ->where('is_active',1)
                             ->where('parent_coa_id',null)
                             ->get();
         // dd($chart_of_accounts);
-        return view('admin.chart-of-account.index',compact('companies','parent_heads','chart_of_accounts'));
+        return view('admin.chart-of-account.index',compact('companies','parent_heads','chart_of_accounts','projects'));
     }
 
     /**
@@ -37,27 +39,29 @@ class ChartOfAccountController extends Controller
      */
     public function store(Request $request)
     {
-
+        // Validation rules
         $this->validate($request, [
-            'company_id'=> 'required|exists:companies,id',
-            // 'project_id'=> 'required|exists:projects,id',
-            'account_name'=> 'string|required',
+            'company_id' => 'required|exists:companies,id',
+            'project_id' => 'required|exists:projects,id',
+            'account_name' => 'string|required',
+            'parent_coa_id' => 'nullable|exists:chart_of_accounts,id',
         ]);
 
-        // dd($request->all());
-        $account = new ChartOfAccount();
-        // $account->account_id = $request->account_id;
-        $account->company_id = $request->company_id;
-        $account->account_name = $request->account_name;
-        $account->parent_coa_id = $request->parent_coa_id ?? null;
-        $account->has_leaf = $request->has_leaf ?? 0;
-        $account->created_by = auth()->user()->id;
-        $account->save();
-        // dd($account);
+        // Create a new Chart of Account instance
+        $chartofaccount = new ChartOfAccount();
+        $chartofaccount->company_id = $request->company_id;
+        $chartofaccount->project_id = $request->project_id;
+        $chartofaccount->account_name = $request->account_name;
+        $chartofaccount->parent_coa_id = $request->parent_coa_id;
+        $chartofaccount->has_leaf = $request->has_leaf ?? 0;
+        $chartofaccount->created_by = auth()->user()->id;
 
-        return redirect()->back()->with('success','New account created successfully.');
+        // Save first to generate the ID
+        $chartofaccount->save();
 
+        return redirect()->back()->with('success', 'New account created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -81,7 +85,28 @@ class ChartOfAccountController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dd($id,$request->all());
+        // dd($id,$request->all());
+
+        $this->validate($request, [
+            'company_id' => 'required|exists:companies,id',
+            'project_id' => 'required|exists:projects,id',
+            'account_name' => 'required|string',
+            'parent_coa_id' => 'nullable|exists:chart_of_accounts,id',
+        ]);
+
+        $chartofaccount = ChartOfAccount::findOrFail($id);
+
+        // Update fields
+        $chartofaccount->company_id = $request->company_id;
+        $chartofaccount->project_id = $request->project_id;
+        $chartofaccount->account_name = $request->account_name;
+        $chartofaccount->parent_coa_id = $request->parent_coa_id ?? null;
+        $chartofaccount->has_leaf = $request->has_leaf ?? 0;
+        $chartofaccount->updated_by = auth()->id();
+
+        $chartofaccount->save();
+
+        return response()->json(['message' => 'Chart of Account updated successfully!'], 200);
     }
 
     /**
@@ -89,6 +114,21 @@ class ChartOfAccountController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Find the ChartOfAccount by ID
+        $chartofaccount = ChartOfAccount::findOrFail($id);
+
+        if ($chartofaccount->child_account()->count() > 0) {
+            return response()->json([
+                'message' => 'Chart of Account cannot be deleted because it has child accounts.',
+            ], 422);
+        } else {
+            // Delete the ChartOfAccount
+            $chartofaccount->delete();
+
+            return response()->json([
+                'message' => 'Chart of Account deleted successfully!',
+            ], 200);
+        }
     }
+
 }

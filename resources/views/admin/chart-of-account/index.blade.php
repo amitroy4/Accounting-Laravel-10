@@ -48,6 +48,11 @@
     .tree .collapsed ul {
         display: none;
     }
+    .disabled {
+        pointer-events: none;
+        cursor: not-allowed; /* Optional: changes the cursor to indicate it's disabled */
+
+    }
 </style>
 <div class="container">
    <div class="page-inner">
@@ -123,11 +128,10 @@
                                                 <div class="form-group">
                                                     <label for="project-select-2">Project</label>
                                                     <select class="form-select form-control select2" id="project-select-2" name="project_id">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
+                                                        <option value="">Select Project</option>
+                                                        @foreach ($projects as $project)
+                                                        <option value="{{$project->id}}">{{$project->project_name}}</option>
+                                                        @endforeach
                                                     </select>
                                                     @error('project_id')
                                                     <span class="text-danger">{{$message}}</span>
@@ -190,7 +194,7 @@
                                 <div class="card-header update-bg-1">
                                     <h4 class="custom-card-title">Update Chart of Accounts </h4>
                                 </div>
-                                <form id="formSubmit" >
+                                <form id="updateformSubmit" >
                                 @csrf
                                 @method('PUT')
                                 <div class="card-body">
@@ -215,11 +219,10 @@
                                             <div class="form-group">
                                             <label for="project_id">Project</label>
                                             <select class="form-select form-control select2" id="project_id" name="project_id">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                                <option value="">Select Project</option>
+                                                @foreach ($projects as $project)
+                                                <option value="{{$project->id}}">{{$project->project_name}}</option>
+                                                @endforeach
                                             </select>
                                             @error('project_id')
                                             <span class="text-danger">{{$message}}</span>
@@ -240,7 +243,7 @@
                                             <div class="form-group">
                                                 <label for="parent_coa_id">Parent Account</label>
                                                 <select class="form-select form-control select2" id="parent_coa_id" name="parent_coa_id">
-                                                    <option>Select Parent Chart Of Account</option>
+                                                    <option value="">Select Parent Chart Of Account</option>
                                                     @foreach ($parent_heads as $parent_head )
                                                     <option value="{{$parent_head->id}}">{{$parent_head->account_name}}</option>
                                                     @endforeach
@@ -266,7 +269,7 @@
                                         <div class="col-md-5 m-auto">
                                             <div class="button-custom-margin">
                                                 <div class="double-buttons">
-                                                    <a class="cancel-btn" href="#"><i class="fas fa-reply"></i>Cancel</a>
+                                                    <a class="delete-btn" href="#"><i class="fas fa-trash"></i>Delete</a>
                                                     <a class="update-btn" id="update-btn" href="#">Update<i class="fas fa-retweet"></i></a>
                                                     <span class="or">or</span>
                                                 </div>
@@ -299,7 +302,20 @@
                                 @if ($account->child_account->count())
                                     <span class="toggle"><i class="bi bi-chevron-right"></i></span>
                                 @endif
-                                <a href="#" class="coa-header" data-account-id="{{$account->id}}">{{ $account->account_name }}</a>
+                                @php
+                                // Define the root account names
+                                $rootAccounts = ['Asset', 'Liability', 'Income', 'Expense'];
+                                $isRootAccount = in_array($account->account_name, $rootAccounts);
+                            @endphp
+
+                            <!-- Disable the <a> tag for root accounts -->
+                            <a href="#"
+                               class="coa-header {{ $isRootAccount ? 'disabled' : '' }}"
+                               data-account-id="{{ $account->id }}"
+                               @if($isRootAccount) style="pointer-events: none; " @endif>
+                                {{ $account->account_name }}
+                            </a>
+                                {{-- <a href="#" class="coa-header" data-account-id="{{$account->id}}">{{ $account->account_name }}</a> --}}
 
                                 @if ($account->child_account->count())
                                     <ul>
@@ -372,6 +388,8 @@
                     $('#parent_coa_id').val(response.parent_coa_id).trigger('change');
                 }
                 $('#has_leaf').val(response.has_leaf);
+                $('.delete-btn').attr('data-account-id', response.id);
+
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching chart of account data:', error);
@@ -388,26 +406,82 @@
 
     });
 
-    $('#formSubmit').on('submit', function(e){
+    $('#updateformSubmit').on('submit', function(e){
         e.preventDefault();
 
         var accountId = $('#account_id').val();
-        var form = new FormData(this);
-        console.log(form);
+        var formData = new FormData(this);
 
         $.ajax({
-            url: `/chart-of-accounts/${accountId}`, // Laravel update endpoint
-            method: 'PUT', // Use POST with '_method' for PUT
-            data: form,
+            url: `/chart-of-accounts/${accountId}`,
+            method: 'POST', // Use POST with '_method' for PUT
+            data: formData,
             processData: false, // Required for FormData
             contentType: false, // Required for FormData
             success: function (response) {
-                console.log('Update Successful:', response);
-                alert('Chart of Account updated successfully!');
+                location.reload();
+
             },
             error: function (xhr, status, error) {
                 console.error('Update Error:', error);
+                $.notify({
+                    // Options
+                    message: status.message
+                }, {
+                    // Settings
+                    type: 'danger',
+                    delay: 3000,
+                    allow_dismiss: true,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    }
+                });
                 alert('Failed to update Chart of Account.');
+            }
+        });
+
+    });
+
+    $('.delete-btn').on('click', function(e){
+        e.preventDefault();
+        const accountId = $(this).data('account-id');
+
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this data!",
+            icon: "warning",
+            buttons: ["Cancel", "Yes, delete it!"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Make the AJAX request to delete the account
+                $.ajax({
+                    url: `/chart-of-accounts/${accountId}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        swal("Deleted!", response.message, "success")
+                            .then(() => {
+                                location.reload();
+                            });
+                    },
+                    error: function (xhr, status, error) {
+                        try {
+                            var response = JSON.parse(xhr.responseText); // Parse response as JSON
+                            errorMessage = response.message || 'Failed to delete the record. Please try again.';
+                        } catch (e) {
+                            errorMessage = 'An unexpected error occurred. Please try again.';
+                        }
+
+                        // Show the error message using SweetAlert
+                        swal("Error!", errorMessage, "error");
+                    }
+                });
+            } else {
+                swal("Your data is safe!");
             }
         });
 

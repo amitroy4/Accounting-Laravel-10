@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('parent_coa_id')->nullable();
             $table->unsignedBigInteger('payment_type_id')->nullable();
-            // $table->unsignedBigInteger('project_id')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->string('account_code');
             $table->string('account_name');
             $table->string('account_type')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('has_leaf')->default(false);
 
             // Corrected foreign key constraints
-            // $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('parent_coa_id')->references('id')->on('chart_of_accounts')->onDelete('restrict'); // Ensure 'chart_of_accounts' is the intended table
