@@ -111,10 +111,10 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group custom-pUpdateing">
-                                                        <label for="company_id_numner">Company Code</label>
-                                                        <input type="text" name="company_id_numner" class="form-control" id="company_id_numner"
-                                                            value="{{ old('company_id_numner', $company->company_id_numner) }}" placeholder="Company Code">
-                                                        @error('company_id_numner')
+                                                        <label for="company_code">Company Code</label>
+                                                        <input type="text" name="company_code" class="form-control" id="company_code"
+                                                            value="{{ old('company_code', $company->company_code) }}" placeholder="Company Code" readonly>
+                                                        @error('company_code')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
