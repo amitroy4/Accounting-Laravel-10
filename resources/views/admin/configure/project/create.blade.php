@@ -60,10 +60,10 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group custom-padding">
-                                                    <label for="project_name">Project Name</label>
+                                                    <label for="project_name">Project Name<span class=" text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control"
                                                         id="project_name" name="project_name"
-                                                        placeholder="Project Name">
+                                                        placeholder="Project Name" required>
                                                     @error('project_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -95,6 +95,7 @@
                                                 <div class="form-group custom-padding">
                                                     <label for="parent_project">Parent Project</label>
                                                     <select class="form-select form-control" id="parent_project" name="parent_project_id">
+                                                        <option value="">Select</option>
                                                         @foreach ($projects as $project)
                                                         <option value="{{$project->id}}">{{$project->project_name}}</option>
                                                         @endforeach
@@ -115,7 +116,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group custom-padding">
                                                     <label for="project_category">Project Category</label>
-                                                    <select class="form-select form-control" id="project_category">
+                                                    <select class="form-select form-control" id="project_category" name="project_category">
                                                         @foreach ($project_categories as $project_category)
                                                         <option value="{{$project_category->id}}">
                                                             {{$project_category->project_category_name}}</option>
