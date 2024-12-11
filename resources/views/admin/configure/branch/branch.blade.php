@@ -126,7 +126,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        <div class="form-button-action">
+                                                                        <div class="form-button-action align-items-center">
                                                                             <a href="{{route('branch.edit',$branch->id)}}">
                                                                                 <button type="button"
                                                                                 data-bs-toggle="tooltip" title=""

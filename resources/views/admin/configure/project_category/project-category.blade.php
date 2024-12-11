@@ -233,7 +233,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        <div class="form-button-action">
+                                                                        <div class="form-button-action align-items-center">
                                                                             <a
                                                                                 href="{{route('project_category.edit',$project_category->id)}}">
                                                                                 <button type="button"

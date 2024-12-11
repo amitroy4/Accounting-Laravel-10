@@ -40,7 +40,8 @@
                                                 class="fas fa-compress"></i></span>Funding Organization List</h4>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="{{route('funding_organization.create')}}" class="btn btn-primary btn-round">
+                                    <a href="{{route('funding_organization.create')}}"
+                                        class="btn btn-primary btn-round">
                                         <i class="fa fa-plus"></i>
                                         Add Funding Organization
                                     </a>
@@ -106,23 +107,30 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($funding_organizations as $key => $funding_organization)
+                                                                @foreach ($funding_organizations as $key =>
+                                                                $funding_organization)
                                                                 <tr role="row" class="odd">
                                                                     <td>{{$key+1}}</td>
                                                                     <td>
-                                                                        {{$funding_organization->funding_organization_name}} <br>
+                                                                        {{$funding_organization->funding_organization_name}}
+                                                                        <br>
                                                                         {{$funding_organization->organization_code}}
                                                                     </td>
-                                                                    <td>{{$countries[$funding_organization->country] ?? 'Unknown Country'}}</td>
-                                                                    <td>{{$funding_organization->organization_address}}</td>
-                                                                    <td>{{$funding_organization->organization_email}}</td>
+                                                                    <td>{{$countries[$funding_organization->country] ?? 'Unknown Country'}}
+                                                                    </td>
+                                                                    <td>{{$funding_organization->organization_address}}
+                                                                    </td>
+                                                                    <td>{{$funding_organization->organization_email}}
+                                                                    </td>
                                                                     <td>
                                                                         @if ($funding_organization->status==1)
-                                                                        <a class="badge bg-success text-light round" href="{{route('funding_organization.activeordeactive',$funding_organization->id)}}">
+                                                                        <a class="badge bg-success text-light round"
+                                                                            href="{{route('funding_organization.activeordeactive',$funding_organization->id)}}">
                                                                             Active
                                                                         </a>
                                                                         @else
-                                                                        <a class="badge bg-danger text-light round" href="{{route('funding_organization.activeordeactive',$funding_organization->id)}}">
+                                                                        <a class="badge bg-danger text-light round"
+                                                                            href="{{route('funding_organization.activeordeactive',$funding_organization->id)}}">
                                                                             Inactive
                                                                         </a>
                                                                         @endif
@@ -132,16 +140,22 @@
                                                                             <a
                                                                                 href="{{route('funding_organization.edit',$funding_organization->id)}}">
                                                                                 <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
+                                                                                    data-bs-toggle="tooltip" title=""
+                                                                                    class="btn btn-link btn-primary btn-lg"
+                                                                                    data-original-title="Edit Task">
+                                                                                    <i class="fa fa-edit"></i>
+                                                                                </button>
                                                                             </a>
-                                                                            <form action="{{ route('funding_organization.destroy', $funding_organization->id) }}" method="POST" style="display:inline;"  onsubmit="event.preventDefault(); confirmDelete(this);">
+                                                                            <form
+                                                                                action="{{ route('funding_organization.destroy', $funding_organization->id) }}"
+                                                                                method="POST" style="display:inline;"
+                                                                                onsubmit="event.preventDefault(); confirmDelete(this);">
                                                                                 @csrf
                                                                                 @method('DELETE')
-                                                                                <button type="submit" data-bs-toggle="tooltip" title="Remove" class="btn btn-link btn-danger">
+                                                                                <button type="submit"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    title="Remove"
+                                                                                    class="btn btn-link btn-danger">
                                                                                     <i class="fa fa-times"></i>
                                                                                 </button>
                                                                             </form>
