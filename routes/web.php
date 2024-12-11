@@ -9,8 +9,7 @@ use App\Http\Controllers\Admin\CurrencyTypeController;
 use App\Http\Controllers\Admin\ChartOfAccountController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\FundingOrganizationController;
-
-
+use App\Http\Controllers\Admin\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +42,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/branch', BranchController::class);
     Route::get('/dashboard/branch/activeordeactive/{Id}', [BranchController::class,'activeordeactive'])->name('branch.activeordeactive');
 
-    Route::resource('/dashboard/project', ProjectController::class);
-
     Route::resource('/dashboard/project_category', ProjectCategoryController::class);
     Route::get('/dashboard/project_category/activeordeactive/{Id}', [ProjectCategoryController::class,'activeordeactive'])->name('project_category.activeordeactive');
 
@@ -60,7 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/project/activeordeactive/{Id}', [ProjectController::class,'activeordeactive'])->name('project.activeordeactive');
     Route::delete('/dashboard/project/files/delete/{id}', [ProjectController::class,'filesdelete'])->name('project.filesdelete');
     Route::post('/dashboard/project/files/upload', [ProjectController::class, 'addFile'])->name('project.addfile');
+
+    Route::get('vouchers/index', [VoucherController::class,'index'])->name('vouchers.index');
+    Route::get('vouchers/create', [VoucherController::class,'create'])->name('vouchers.create');
+
 });
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

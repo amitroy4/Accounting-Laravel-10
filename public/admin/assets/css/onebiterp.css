@@ -10965,7 +10965,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 .custom-voucher-card-bg-1{
     background: #F6F5F2 !important;
     box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1), 0 0px 18px 0 rgba(0, 0, 0, 0.05)!important;
-    margin-bottom: 0 !important;
+    margin: 20px 0;
 }
 .custom-voucher-card-bg-2{
     background: #ECF2FF !important;

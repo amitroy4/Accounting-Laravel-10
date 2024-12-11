@@ -102,13 +102,13 @@
 							<div class="collapse" id="voucher-nav">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="create-voucher.php">
+										<a href="{{route('vouchers.create')}}">
 										    <i class="fas fa-file-signature"></i>
 											<span class="sub-item">Create Voucher</span>
 										</a>
 									</li>
 									<li>
-										<a href="voucher-list.php">
+										<a href="{{route('vouchers.index')}}">
 										    <i class="fas fa-file-alt"></i>
 											<span class="sub-item">Voucher List</span>
 										</a>
