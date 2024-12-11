@@ -197,19 +197,19 @@
                         <h5 class="modal-title" id="fileUploadModalLabel">Document Upload</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{route('project.addfile')}}" id="fundingOrganizationForm" method="POST"
+                    <form action="{{route('project.addfile')}}" id="projectForm" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <input type="text" id="organization_code" name="organization_code" style="display: none;">
+                        <input type="text" id="project_code" name="project_code" style="display: none;">
                         <div class="col-md-12">
                             <div class="form-group custom-padding">
-                                <label for="organization_documents" class="form-label">Documents</label>
+                                <label for="project_documents" class="form-label">Documents</label>
                                 <input
                                     type="file"
                                     class="form-control"
-                                    id="organization_documents"
-                                    name="organization_documents[]"
+                                    id="project_documents"
+                                    name="project_documents[]"
                                     multiple>
                             </div>
                             <div id="preview-container" class="mt-3 row g-1">
@@ -251,7 +251,7 @@
     // // Trigger the file input when the corresponding button is clicked
     $(document).on('click', '.addFileButton', function () {
         let fundingOrganizationId = $(this).data('id'); // Get the organization ID from the button
-        $('#organization_code').val(fundingOrganizationId);
+        $('#project_code').val(fundingOrganizationId);
         // $('.fileInput[data-id="' + fundingOrganizationId + '"]').click(); // Trigger the corresponding file input
     });
 
@@ -260,7 +260,7 @@
         let selectedFiles = []; // Array to manage selected files
 
         // When files are selected
-        $('#organization_documents').on('change', function (e) {
+        $('#project_documents').on('change', function (e) {
             const files = Array.from(e.target.files); // Convert FileList to an Array
             const previewContainer = $('#preview-container');
             previewContainer.empty(); // Clear existing previews
@@ -305,7 +305,7 @@
             // Update the input files
             const dataTransfer = new DataTransfer();
             selectedFiles.forEach((file) => dataTransfer.items.add(file));
-            $('#organization_documents')[0].files = dataTransfer.files;
+            $('#project_documents')[0].files = dataTransfer.files;
 
             $(this).parent().remove(); // Remove the preview
         });

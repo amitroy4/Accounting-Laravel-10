@@ -55,7 +55,7 @@ class FundingOrganizationController extends Controller
             'contact_person_number' => 'nullable|string|max:15',
             'contact_person_whatsapp_number' => 'nullable|string|max:15',
             'contact_person_email' => 'nullable|email|max:255',
-            'organization_documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Individual document validation
+            'organization_documents.*' => 'nullable|file|max:5048', // Individual document validation
         ]);
 
         // dd($validatedData);
@@ -209,10 +209,8 @@ class FundingOrganizationController extends Controller
         // dd($request->all());
         // Validate the incoming request
         $request->validate([
-            'organization_documents.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048', // Adjust MIME types and size as needed
+            'organization_documents.*' => 'required|file|max:5048', // Adjust MIME types and size as needed
         ]);
-
-
 
          if ($request->hasFile('organization_documents')) {
             foreach ($request->file('organization_documents') as $file) {
