@@ -6612,11 +6612,13 @@ label.error {
 }
 
 .btn-link.btn-info {
-	color: #48abf7 !important
+	color: #48abf7 !important;
+    transition: .4s ease-in;
 }
 
 .btn-link.btn-info:hover {
-	color: #48abf7 !important
+    /* border: 1px solid #48abf7 !important; */
+	color: #48abf7 !important;
 }
 
 .btn-link.btn-success {
@@ -10860,7 +10862,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 500 !important;
-    line-height: 40px;
+    /* line-height: 40px; */
     color: #332941!important;
 }
 .delete-btn:hover{
@@ -11019,4 +11021,11 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 .c-h-separator-r{
     border-right: 2px solid #6B728E!important;
+}
+.select2-container--bootstrap .select2-selection--single {
+    height: auto !important;
+    padding: 7px 15px !important;
+}
+.select2-container--bootstrap{
+    z-index: 9999 !important;
 }

@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/company/activeordeactive/{Id}', [CompanyController::class,'activeordeactive'])->name('company.activeordeactive');
 
     Route::resource('/dashboard/branch', BranchController::class);
+    Route::post('/dashboard/branch/company-wise-branch/{branchId}',[BranchController::class, 'companywisebranch'])->name('company.branch');
     Route::get('/dashboard/branch/activeordeactive/{Id}', [BranchController::class,'activeordeactive'])->name('branch.activeordeactive');
 
     Route::resource('/dashboard/project_category', ProjectCategoryController::class);

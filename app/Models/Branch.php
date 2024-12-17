@@ -12,6 +12,7 @@ class Branch extends Model
         'branch_name',
         'branch_code',
         'parent_branch',
+        'company_id',
         'opening_time',
         'closing_time',
         'branch_address',
@@ -40,5 +41,10 @@ class Branch extends Model
     public function childBranches()
     {
         return $this->hasMany(Branch::class, 'parent_branch');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 }

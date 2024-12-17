@@ -24,4 +24,14 @@ class Company extends Model
         'company_email',
         'company_website',
     ];
+
+    /**
+     * Relationship: A company has many entries in the companywisebranch table.
+     */
+    public function branches()
+    {
+        return $this->hasMany(Branch::class, 'company_id');
+    }
+
+
 }

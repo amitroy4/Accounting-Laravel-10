@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\CompanywiseBranch;
 use Illuminate\Support\Facades\Storage;
 
 class BranchController extends Controller
@@ -16,7 +17,8 @@ class BranchController extends Controller
     public function index()
     {
         $branches = Branch::all();
-        return view('admin.configure.branch.branch',compact('branches'));
+        $companies = Company::where('status',1)->get();
+        return view('admin.configure.branch.branch',compact('branches','companies'));
     }
 
     /**
@@ -25,6 +27,7 @@ class BranchController extends Controller
     public function create()
     {
         $branches = Branch::where('status', 1)->get();
+
         return view('admin.configure.branch.create_branch',compact('branches'));
     }
 
@@ -188,5 +191,16 @@ class BranchController extends Controller
 
         return redirect()->back()->with('success', 'Status Changed successfully!');
 
+    }
+    public function companywisebranch(Request $request,string $branchId)
+    {
+        $branch = Branch::find($branchId);
+        // dd($branch->id, $request->all());
+
+        $branch->update([
+            'company_id' => $request->company_id,
+        ]);
+
+        return redirect()->back()->with('success','Branch Added to a company.');
     }
 }

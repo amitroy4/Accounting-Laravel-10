@@ -3,10 +3,7 @@
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-    .select2-container--bootstrap .select2-selection--single {
-        height: auto !important;
-        padding: 7px 15px !important;
-    }
+    
     .tree,
     .tree ul {
         list-style-type: none;

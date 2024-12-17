@@ -57,7 +57,6 @@
                                         <h4 class="custom-c-h-title">branch List</h4>
                                     </div>
                                     <div class="card-body">
-
                                         <div class="table-responsive">
                                             <div id="add-row_wrapper"
                                                 class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -83,6 +82,11 @@
                                                                         style="width: 373.033px;" aria-sort="ascending"
                                                                         aria-label="Name: activate to sort column descending">
                                                                         Parent Branch</th>
+                                                                    <th class="sorting_asc" tabindex="0"
+                                                                        aria-controls="add-row" rowspan="1" colspan="1"
+                                                                        style="width: 373.033px;" aria-sort="ascending"
+                                                                        aria-label="Name: activate to sort column descending">
+                                                                        Company</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 534.283px;"
@@ -105,13 +109,20 @@
                                                                 <tr role="row" class="odd">
                                                                     <td>{{$key+1}}</td>
                                                                     <td class=" d-flex align-items-center">
-                                                                        <img src="{{ asset('storage/' . $branch->branch_logo) }}" alt="{{ $branch->branch_name }}" width="100">
+                                                                        {{-- <img src="{{ asset('storage/' . $branch->branch_logo) }}" alt="{{ $branch->branch_name }}" width="100"> --}}
                                                                         <div class=" ps-4">
                                                                            <b>{{$branch->branch_name}}</b> <br>
                                                                             {{$branch->branch_code}}
                                                                         </div>
                                                                     </td>
-                                                                    <td>{{ $branch->parentBranch ? $branch->parentBranch->branch_name : 'Main Branch' }}
+                                                                    <td>{{ $branch->parentBranch ? $branch->parentBranch->branch_name : '' }} </td>
+
+                                                                    <td>
+                                                                        @if ($branch->parentBranch)
+                                                                            {{ $branch->parentBranch->company ? $branch->parentBranch->company->company_name : '' }}
+                                                                        @else
+                                                                            {{ $branch->company ? $branch->company->company_name : '' }}
+                                                                        @endif
                                                                     </td>
                                                                     <td>{{$branch->branch_address}},{{$branch->branch_district}}, {{$branch->branch_zipcode}}</td>
                                                                     <td>
@@ -127,24 +138,75 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-button-action align-items-center">
-                                                                            <a href="{{route('branch.edit',$branch->id)}}">
-                                                                                <button type="button"
-                                                                                data-bs-toggle="tooltip" title=""
-                                                                                class="btn btn-link btn-primary btn-lg"
-                                                                                data-original-title="Edit Task">
-                                                                                <i class="fa fa-edit"></i>
-                                                                            </button>
+                                                                            @if ($branch->parent_branch == null)
+                                                                            <a href="#"
+                                                                                class="btn btn-link btn-info "
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-form_{{$branch->id}}">
+                                                                                <i class="fas fa-plus"></i>
                                                                             </a>
-                                                                            <form action="{{ route('branch.destroy', $branch->id) }}" method="POST" style="display:inline;"  onsubmit="event.preventDefault(); confirmDelete(this);">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                                <button type="submit" data-bs-toggle="tooltip" title="Remove" class="btn btn-link btn-danger">
-                                                                                    <i class="fa fa-times"></i>
-                                                                                </button>
-                                                                            </form>
+                                                                            @endif
+
+                                                                            <a href="{{route('branch.edit',$branch->id)}}"
+                                                                                data-bs-toggle="tooltip" title=""
+                                                                                class="btn btn-link btn-primary "
+                                                                                data-original-title="Edit Task">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                            <a href="#"
+                                                                                class="btn btn-link btn-danger delete-btn"
+                                                                                data-form-id="delete-form-{{ $branch->id }}"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="Remove">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
                                                                         </div>
+                                                                        <form id="delete-form-{{ $branch->id }}"
+                                                                            action="{{ route('branch.destroy', $branch->id) }}"
+                                                                            method="POST"
+                                                                            style="display: none;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                        </form>
                                                                     </td>
                                                                 </tr>
+                                                                <!-- Modal form -->
+                                                                <div class="modal fade" id="modal-form_{{$branch->id}}" tabindex="-1" role="dialog" aria-hidden="true"  >
+                                                                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body p-0">
+                                                                                <div class="card mb-0">
+                                                                                    <div class="card-header text-left">
+                                                                                        <h3 class="fw-bolder text-info">Company Assign</h3>
+                                                                                    </div>
+                                                                                    <form action="{{route('company.branch',$branch->id)}}" method="POST" >
+                                                                                        @csrf
+                                                                                        @method('POST')
+                                                                                        <div class="card-body">
+                                                                                            <div class="select2-input">
+                                                                                                <label class="form-label" for="company_id">Company</label>
+                                                                                                <select name="company_id" id="company_id" class="form-select select2">
+                                                                                                    <option value="">Select A Company</option>
+                                                                                                    @foreach ($companies as $company)
+                                                                                                    <option value="{{$company->id}}" {{$branch->company_id == $company->id ? 'selected' : ''}}>{{$company->company_name}}</option>
+                                                                                                    @endforeach
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            <div class="text-end">
+                                                                                                <button
+                                                                                                    type="submit"
+                                                                                                    class="btn btn-round btn-info mt-4 mb-0" >
+                                                                                                    Save
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
@@ -164,24 +226,39 @@
         <!--branch Add Form-->
     </div>
 </div>
+
+
+
 @endsection
 @push('script')
 <script>
-    function confirmDelete(form) {
-        swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this data!",
-            icon: "warning",
-            buttons: ["Cancel", "Yes, delete it!"],
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                form.submit();
-                swal("Deleted!", "Branch has been deleted.", "success");
-            } else {
-                swal("Your Branch is safe!");
-            }
+    $(document).ready(function () {
+
+        $('.select2').select2({
+            theme: "bootstrap"
         });
-    }
+        // Attach click event to delete buttons
+        $('.delete-btn').on('click', function (e) {
+            e.preventDefault();
+
+            const formId = $(this).data('form-id');
+            const form = $('#' + formId);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this data!",
+                icon: "warning",
+                buttons: ["Cancel", "Yes, delete it!"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Deleted!", "The record has been deleted.", "success");
+                } else {
+                    swal("Your data is safe!");
+                }
+            });
+        });
+    });
 </script>
 @endpush
