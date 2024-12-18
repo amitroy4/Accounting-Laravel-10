@@ -78,11 +78,17 @@
                                                                         style="width: 373.033px;" aria-sort="ascending"
                                                                         aria-label="Name: activate to sort column descending">
                                                                         Company</th>
+
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 534.283px;"
                                                                         aria-label="Position: activate to sort column ascending">
                                                                         Short Name</th>
+                                                                    <th class="sorting_asc" tabindex="0"
+                                                                        aria-controls="add-row" rowspan="1" colspan="1"
+                                                                        style="width: 373.033px;" aria-sort="ascending"
+                                                                        aria-label="Name: activate to sort column descending">
+                                                                        Brands</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
@@ -105,13 +111,32 @@
                                                                 <tr role="row" class="odd">
                                                                     <td>{{$key+1}}</td>
                                                                     <td class=" d-flex align-items-center">
-                                                                        <img src="{{ asset('storage/' . $company->company_logo) }}" alt="{{ $company->company_name }}" width="100">
+                                                                        <img src="{{ asset('storage/' . $company->company_logo) }}" alt="Company_logo" width="100">
                                                                         <div class=" ps-4">
                                                                             <b>{{$company->company_name}}</b> <br>
                                                                            {{$company->company_code}}
                                                                         </div>
                                                                     </td>
                                                                     <td>{{$company->company_short_name}}</td>
+                                                                    <td>
+                                                                        @foreach ($company->branches as $branch)
+                                                                            <p>
+                                                                                {{ $branch->branch_name }}
+                                                                                <a href="#" class="text-danger ml-10 branchRemove" data-company-id="{{ $company->id }}">
+                                                                                    <i class="fa fa-times text-danger"></i>
+                                                                                </a>
+
+                                                                                {{-- Hidden form for removing the branch --}}
+                                                                                <form action="{{ route('company.branch.remove', ['company_id' => $company->id, 'branch_id' => $branch->id]) }}"
+                                                                                      method="POST"
+                                                                                      class="d-none branchRemoveForm_{{ $company->id }}">
+                                                                                    @csrf
+                                                                                    @method('DELETE')
+
+                                                                                </form>
+                                                                            </p>
+                                                                        @endforeach
+                                                                    </td>
                                                                     <td>{{$company->company_address}},{{$company->company_district}}, {{$company->company_zip_code}}</td>
                                                                     <td>
                                                                         @if ($company->status==1)
@@ -229,32 +254,10 @@
 
         $(document).on('click', '.company-branches', function (e) {
             e.preventDefault();
-
             // Get the company ID from the button
             const companyId = $(this).data('company-id');
-                $('#company_id').val(companyId);
-            // Perform AJAX request to fetch branches for the company
-            // $.ajax({
-            //     url: `/dashboard/companies/${companyId}/branches`, // Adjust the route as per your Laravel setup
-            //     method: 'GET',
-            //     success: function (response) {
+            $('#company_id').val(companyId);
 
-            //         $('#branch_id').val(null).trigger('change');
-
-            //         // Mark the branches returned by the server as selected
-            //         response.branches.forEach(function (branch) {
-
-            //             $(`#branch_id option[value="${branch.id}"]`).prop('selected', true);
-            //         });
-
-            //         // Reinitialize Select2 to reflect the changes
-            //         $('#branch_id').trigger('change');
-            //     },
-            //     error: function (xhr, status, error) {
-            //         console.error('Failed to load branches:', error);
-            //         alert('Failed to load branches. Please try again.');
-            //     }
-            // });
         });
 
         // Attach click event to delete buttons
@@ -279,6 +282,31 @@
                 }
             });
         });
+
+        $(document).on('click', '.branchRemove', function (e) {
+            e.preventDefault(); // Prevent default action
+
+            let companyId = $(this).data('company-id');
+            // Find the corresponding form
+            const form = $('branchRemoveForm_' + companyId);
+            console.log(form);
+            // form.submit();
+            // Confirmation alert using SweetAlert
+            swal({
+                title: "Are you sure?",
+                text: "This branch will be unassigned from the company.",
+                icon: "warning",
+                buttons: ["Cancel", "Yes, unassign it!"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit(); // Submit the form
+                } else {
+                    swal("No changes made.", "The branch was not unassigned.", "info");
+                }
+            });
+        });
+
     });
 </script>
 @endpush

@@ -37,7 +37,7 @@
                             <ul class="nav nav-pills nav-secondary  nav-pills-no-bd nav-pills-icons justify-content-center"
                                 id="pills-tab-with-icon" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" id="pills-profile-tab-icon" data-bs-toggle="pill"
+                                    <a class="nav-link " id="pills-profile-tab-icon" data-bs-toggle="pill"
                                         href="#receive-voucher" role="tab" aria-controls="receive-voucher"
                                         aria-selected="false" tabindex="-1">
                                         <i class="far fa-user"></i>
@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link " id="pills-home-tab-icon" data-bs-toggle="pill"
+                                    <a class="nav-link active" id="pills-home-tab-icon" data-bs-toggle="pill"
                                         href="#payment-voucher" role="tab" aria-controls="payment-voucher"
                                         aria-selected="true">
                                         <i class="icon-home"></i>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="card-body">
                             <div class="tab-content" id="pills-with-icon-tabContent">
-                                <div class="tab-pane fade show active" id="receive-voucher" role="tabpanel"
+                                <div class="tab-pane fade" id="receive-voucher" role="tabpanel"
                                     aria-labelledby="pills-home-tab-icon">
                                     <!--Receive voucher Voucher Form-->
                                     <div class="card-header voucher-card-header-bg-1">
@@ -99,19 +99,8 @@
                                         <!--Voucher Form 1st Part-->
                                         <div class="card custom-voucher-card-bg-1">
                                             <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="defaultSelect">Company</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
+
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="defaultSelect">Project</label>
                                                         <select class="form-select form-control" id="defaultSelect">
@@ -123,6 +112,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-2"></div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Voucher Create Date</label>
@@ -425,7 +415,7 @@
                                     <!--Voucher Form Last Row-->
                                 </div>
 
-                                <div class="tab-pane fade" id="payment-voucher" role="tabpanel"
+                                <div class="tab-pane fade show active" id="payment-voucher" role="tabpanel"
                                     aria-labelledby="pills-home-tab-icon">
                                     <!--Payment Voucher Form-->
                                     <div class="card-header voucher-card-header-bg-1">
@@ -435,36 +425,25 @@
                                         <!--Voucher Form 1st Part-->
                                         <div class="card custom-voucher-card-bg-1">
                                             <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="defaultSelect">Company</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
+
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="defaultSelect">Project</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                        <select class="form-select form-control select2" id="projectDropdown">
+                                                            <option value="">Select A Project</option>
+                                                            @foreach ($projects as $project)
+                                                            <option value="{{$project->id}}">{{$project->project_name}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-2"></div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Voucher Create Date</label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" id="datepicker"
-                                                                name="datepicker">
+                                                            <input type="text" class="form-control" id="datepicker2"
+                                                                name="datepicker2">
                                                             <span class="input-group-text">
                                                                 <i class="fa fa-calendar-check"></i>
                                                             </span>
@@ -474,12 +453,11 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="defaultSelect">Currency Type</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                        <select class="form-select form-control select2" id="currency_type">
+                                                            <option >Select Currency</option>
+                                                            @foreach ($currency_types as $currency)
+                                                            <option value="{{$currency->id}}">{{$currency->currency_name}} ({{$currency->currency_short_name}})</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -501,35 +479,25 @@
                                         </div>
                                         <!--Voucher Form 1st Part-->
                                         <!--Voucher Form 2nd Part-->
-                                        <div class="card custom-voucher-card-bg-2 mt-3">
+                                        <div class="card custom-voucher-card-bg-2 mt-3 ledger-row">
                                             <div class="row">
                                                 <div class="col-md-7">
                                                     <div class="form-group">
                                                         <label for="defaultSelect">Debit Ledger Head</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                        <select class="form-select form-control select2" id="debitLedgerHead">
+                                                            <option value="">Select Chart of Account</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="defaultSelect">Debit Amount</label>
-                                                        <select class="form-select form-control" id="defaultSelect">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                        </select>
+                                                        <label for="debitAmount">Debit Amount</label>
+                                                        <input type="number" class="form-control" name="debitAmount" id="debitAmount" min="0">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <div class="form-group">
-                                                        <button class="btn btn-secondary">
+                                                        <button class="btn btn-secondary add-row">
                                                             <span class="btn-label">
                                                                 <i class="fa fa-plus"></i>
                                                             </span>
@@ -539,6 +507,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="dynamic-rows-container"></div>
                                         <!--Voucher Form 2nd Part-->
                                         <!--Voucher Form 3rd Part-->
                                         <div class="card custom-voucher-card-bg-1 mt-3">
@@ -778,5 +747,115 @@
 
 @endsection
 @push('script')
+<script>
+    $('#datepicker').datetimepicker({
+        format: 'MM/DD/YYYY',
+    })
+    $('#datepicker2').datetimepicker({
+        format: 'MM/DD/YYYY',
+    })
 
+    $('.select2').select2({
+        theme: "bootstrap",
+        placeholder: "Select A Project",
+        allowClear: true
+    });
+
+
+
+    $(document).ready(function () {
+
+
+        // Listen for changes on the Project dropdown
+        $('#projectDropdown').on('change', function () {
+            const projectId = $(this).val();
+            console.log(projectId);
+
+            // Clear the Debit Ledger Head dropdown
+            $('#debitLedgerHead').html('<option value="">Select Chart of Account</option>');
+
+            if (projectId) {
+                // Make an AJAX request to fetch chart of accounts for the selected project
+                $.ajax({
+                    url: `/dashboard/project/get-debit-account/${projectId}`, // Replace with your actual route
+                    type: 'GET',
+                    success: function (response) {
+                        console.log(response);
+
+                        if (response.success && response.debit_accounts) {
+                            // Populate the Debit Ledger Head dropdown
+                            response.debit_accounts.forEach(function (account) {
+                                $('#debitLedgerHead').append(
+                                    `<option value="${account.id}">${account.account_name}</option>`
+                                );
+                            });
+
+                            // Reinitialize Select2 for the updated dropdown
+                            $('#debitLedgerHead').select2({
+                                theme: "bootstrap",
+                                placeholder: "Select Chart of Account",
+                                allowClear: true,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching chart of accounts:', error);
+                        alert('Failed to fetch chart of accounts. Please try again.');
+                    }
+                });
+            }
+        });
+
+        // Handle dynamic row addition
+        $(document).on('click', '.add-row', function (e) {
+            e.preventDefault();
+
+            const newRowId = $('#dynamic-rows-container .ledger-row').length + 1;
+            const newRow = `
+                <div class="ledger-row" data-row-id="${newRowId}">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label for="debitLedgerHead-${newRowId}">Debit Ledger Head</label>
+                                <select class="form-select form-control select2 debitLedgerHead" id="debitLedgerHead-${newRowId}">
+                                    <option value="">Select Chart of Account</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="debitAmount-${newRowId}">Debit Amount</label>
+                                <input type="number" class="form-control" name="debitAmount[]" id="debitAmount-${newRowId}" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button class="btn btn-danger remove-row">
+                                    <span class="btn-label">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            $('#dynamic-rows-container').append(newRow);
+
+            // Reinitialize Select2 for the newly added row
+            $(`#debitLedgerHead-${newRowId}`).select2({
+                theme: "bootstrap",
+                placeholder: "Select Chart of Account",
+                allowClear: true,
+            });
+        });
+
+        // Handle row removal
+        $(document).on('click', '.remove-row', function (e) {
+            e.preventDefault();
+            $(this).closest('.ledger-row').remove();
+        });
+    });
+
+
+</script>
 @endpush

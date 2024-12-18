@@ -7,6 +7,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CompanywiseBranch;
+use App\Models\Project;
 use Illuminate\Support\Facades\Storage;
 
 class BranchController extends Controller
@@ -17,8 +18,7 @@ class BranchController extends Controller
     public function index()
     {
         $branches = Branch::all();
-        $companies = Company::where('status',1)->get();
-        return view('admin.configure.branch.branch',compact('branches','companies'));
+        return view('admin.configure.branch.branch',compact('branches'));
     }
 
     /**
@@ -54,7 +54,6 @@ class BranchController extends Controller
             'branch_email' => 'nullable|email|max:255',
             'branch_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status' => 'nullable|boolean',
-
         ]);
 
         // dd($validatedData);
@@ -192,5 +191,5 @@ class BranchController extends Controller
         return redirect()->back()->with('success', 'Status Changed successfully!');
 
     }
-    
+
 }

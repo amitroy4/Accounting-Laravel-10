@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Branch;
 use App\Models\Project;
 use App\Models\CurrencyType;
 use Illuminate\Http\Request;
+use App\Models\ChartOfAccount;
 use App\Models\ProjectFunding;
 use App\Models\ProjectCategory;
 use App\Models\FundingOrganization;
@@ -20,6 +22,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects =Project::all();
+
         return view('admin.configure.project.index',compact('projects'));
     }
 
@@ -32,7 +35,8 @@ class ProjectController extends Controller
         $currency_types = CurrencyType::where('status',1)->get();
         $funding_organizations = FundingOrganization::where('status',1)->get();
         $projects =Project::where('status',1)->get();
-        return view('admin.configure.project.create',compact('project_categories','currency_types','funding_organizations','projects'));
+        $branches = Branch::where('status', 1)->get();
+        return view('admin.configure.project.create',compact('project_categories','currency_types','funding_organizations','projects','branches'));
     }
 
     /**
@@ -59,6 +63,7 @@ class ProjectController extends Controller
         'project_approval_authority' => 'nullable|string|max:255',
         'approval_reference_number' => 'nullable|string|max:255',
         'approval_date' => 'nullable|date',
+        'branch_id' => 'nullable|exists:branches,id',
     ]);
 
     // Create a new project record
@@ -119,10 +124,11 @@ class ProjectController extends Controller
         $funding_organizations = FundingOrganization::where('status',1)->get();
 
         $project_fundings = ProjectFunding::where('project_id',$id)->get();
+        $branches = Branch::where('status', 1)->get();
 
         // dd($project_fundings);
 
-        return view('admin.configure.project.edit',compact('project','documents','projects','project_categories','funding_organizations','currency_types','project_fundings'));
+        return view('admin.configure.project.edit',compact('project','documents','projects','project_categories','funding_organizations','currency_types','project_fundings','branches'));
     }
 
     /**
@@ -151,6 +157,7 @@ class ProjectController extends Controller
             'project_approval_authority' => 'nullable|string|max:255',
             'approval_reference_number' => 'nullable|string|max:255',
             'approval_date' => 'nullable|date',
+            'branch_id' => 'nullable|exists:branches,id',
         ]);
 
         // Update the project with the validated data
@@ -239,4 +246,34 @@ class ProjectController extends Controller
 
         return redirect()->route('project.index')->with('success', 'Data saved successfully!');
     }
+
+    public function DebitAccount($projectId)
+    {
+        // Fetch chart of accounts for the selected project
+        $chartOfAccounts = ChartOfAccount::where('project_id', $projectId)->where('has_leaf',1)->get(['id', 'account_name']);
+
+        if ($chartOfAccounts->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'No chart of accounts found for this project.']);
+        }
+
+        return response()->json(['success' => true, 'debit_accounts' => $chartOfAccounts]);
+    }
+
+    /**
+     * Return a JSON response with the HTML for a select dropdown of credit accounts for a given project ID.
+     *
+     * @param int $projectId The ID of the project to fetch credit accounts for.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function CreditAccount($projectId)
+    {
+        $chartOfAccounts = ChartOfAccount::where('project_id', $projectId)->where('has_leaf',1)->get(['id', 'account_name']);
+
+        if ($chartOfAccounts->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'No chart of accounts found for this project.']);
+        }
+
+        return response()->json(['success' => true, 'credit_accounts' => $chartOfAccounts]);
+    }
+
 }

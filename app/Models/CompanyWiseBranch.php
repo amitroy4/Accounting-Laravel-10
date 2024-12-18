@@ -26,4 +26,6 @@ class CompanyWiseBranch extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
+
+    
 }

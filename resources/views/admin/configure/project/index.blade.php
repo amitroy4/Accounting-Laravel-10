@@ -93,6 +93,11 @@
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
                                                                         style="width: 308.967px;"
                                                                         aria-label="Office: activate to sort column ascending">
+                                                                        Branch</th>
+                                                                    <th class="sorting" tabindex="0"
+                                                                        aria-controls="add-row" rowspan="1" colspan="1"
+                                                                        style="width: 308.967px;"
+                                                                        aria-label="Office: activate to sort column ascending">
                                                                         Project Budget</th>
                                                                     <th class="sorting" tabindex="0"
                                                                         aria-controls="add-row" rowspan="1" colspan="1"
@@ -116,8 +121,8 @@
                                                                     </td>
                                                                     <td>{{$project->parentProject?$project->parentProject->project_name:'N/A'}}
                                                                     </td>
-                                                                    <td>{{$project->project_budget}}
-                                                                    </td>
+                                                                    <td>{{$project->project_budget}} </td>
+                                                                    <td>{{$project->project_budget}} </td>
                                                                     <td>
                                                                         @if ($project->status==1)
                                                                         <a class="badge bg-success text-light round"

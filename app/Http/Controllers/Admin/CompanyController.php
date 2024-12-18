@@ -211,4 +211,22 @@ class CompanyController extends Controller
 
         return redirect()->back()->with('success', 'Branch assigned to a company successfully.');
     }
+
+    public function removeBranch($company_id, $branch_id)
+    {
+        // Check if the company-branch association exists
+        $companyWiseBranch = CompanyWiseBranch::where('company_id', $company_id)
+                                            ->where('branch_id', $branch_id)
+                                            ->first();
+        dd($companyWiseBranch);
+        // if (!$companyWiseBranch) {
+        //     return redirect()->back()->with('error', 'The branch is not assigned to this company.');
+        // }
+
+        // // Delete the association
+        // $companyWiseBranch->delete();
+
+        // return redirect()->back()->with('success', 'The branch has been unassigned from the company successfully.');
+    }
+
 }

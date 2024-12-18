@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model
 {
@@ -54,6 +54,14 @@ class Branch extends Model
     public function companyWiseBranch()
     {
         return $this->hasOne(CompanyWiseBranch::class, 'branch_id', 'id');
+    }
+
+    /**
+     * Get the projects that belong to the branch.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 
 }

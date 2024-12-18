@@ -7,6 +7,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
 use App\Http\Controllers\Controller;
+use App\Models\CurrencyType;
 
 class VoucherController extends Controller
 {
@@ -21,39 +22,9 @@ class VoucherController extends Controller
     public function create()
     {
         $companies = Company::where('status',1)->get();
-
-        return view("admin.voucher.create",compact("companies"));
-    }
-
-    public function DebitAccount($projectId)
-    {
-        $all_moca = ChartOfAccount::where('project_id',$projectId)->where('has_leaf',1)->get();
-        $html = '<option >-Select-</option>';
-
-        if($all_moca->count())
-        {
-            foreach($all_moca as $row)
-            {
-                $html .= '<option value="'.$row->id.'">'.$row->account_name.'-'.$row->account_code. ' ( '. $row->account_type .' ) </option>';
-            }
-        }
-        return response()->json($html);
-    }
-
-    public function CreditAccount($projectId)
-    {
-        $all_moca = ChartOfAccount::where('project_id',$projectId)->where('has_leaf',1)->get();
-
-        $html = '<option >-Select-</option>';
-
-        if($all_moca->count())
-        {
-            foreach($all_moca as $row)
-            {
-                $html .= '<option value="'.$row->id.'">'.$row->account_name.'-'.$row->account_code.' ( '. $row->account_type .' ) </option>';
-            }
-        }
-        return response()->json($html);
+        $projects = Project::where('status',1)->get();
+        $currency_types = CurrencyType::where('status',1)->get();
+        return view("admin.voucher.create",compact("companies","projects","currency_types"));
     }
 
     

@@ -27,6 +27,7 @@ class Project extends Model
         'project_approval_authority',
         'approval_reference_number',
         'approval_date',
+        'branch_id',
     ];
 
     // Relationships
@@ -52,4 +53,15 @@ class Project extends Model
     {
         return $this->hasMany(Project::class, 'parent_project_id');
     }
+
+    /**
+     * Get the branches that belong to the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
 }

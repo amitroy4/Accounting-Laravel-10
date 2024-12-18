@@ -104,6 +104,17 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group custom-padding">
+                                                    <label for="branch">Branch</label>
+                                                    <select class="form-select form-control" id="branch" name="branch_id">
+                                                        <option value="">Select a branch</option>
+                                                        @foreach ($branches as $branch)
+                                                        <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group custom-padding">
                                                     <label for="project_area">Project Area / Address</label>
                                                     <input type="text" class="form-control form-control"
                                                         id="project_area" name="project_area"

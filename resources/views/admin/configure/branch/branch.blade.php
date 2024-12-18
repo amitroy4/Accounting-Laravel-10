@@ -140,14 +140,13 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-button-action align-items-center">
-                                                                            @if ($branch->parent_branch == null)
-                                                                            <a href="#"
-                                                                                class="btn btn-link btn-info "
+
+                                                                            {{-- <a href="#" data-branch-id="{{$branch->id}}"
+                                                                                class="btn btn-link btn-info branch-projects"
                                                                                 data-bs-toggle="modal"
-                                                                                data-bs-target="#modal-form_{{$branch->id}}">
+                                                                                data-bs-target="#modal-form">
                                                                                 <i class="fas fa-plus"></i>
-                                                                            </a>
-                                                                            @endif
+                                                                            </a> --}}
 
                                                                             <a href="{{route('branch.edit',$branch->id)}}"
                                                                                 data-bs-toggle="tooltip" title=""
@@ -172,8 +171,6 @@
                                                                         </form>
                                                                     </td>
                                                                 </tr>
-
-
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
@@ -193,14 +190,25 @@
         <!--branch Add Form-->
     </div>
 </div>
+
 @endsection
 @push('script')
 <script>
     $(document).ready(function () {
 
         $('.select2').select2({
-            theme: "bootstrap"
+            theme: "bootstrap",
+            placeholder: "Select Branches",
+            allowClear: true
         });
+
+        // $(document).on('click', '.branch-projects', function (e) {
+        //     e.preventDefault();
+        //     const branchId = $(this).data('branch-id');
+        //     $('#branch_id').val(branchId);
+
+        // });
+
         // Attach click event to delete buttons
         $('.delete-btn').on('click', function (e) {
             e.preventDefault();
