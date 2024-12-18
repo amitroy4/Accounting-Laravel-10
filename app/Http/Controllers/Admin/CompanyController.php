@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\CompanyWiseBranch;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
@@ -15,7 +17,11 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::all()->reverse();
-        return view('admin.configure.company.company', compact('companies'));
+        $branches = Branch::where('parent_branch', null)
+                    ->whereDoesntHave('companyWiseBranch')
+                    ->get();
+
+        return view('admin.configure.company.company', compact('companies','branches'));
     }
 
     /**
@@ -171,5 +177,38 @@ class CompanyController extends Controller
 
         return redirect()->back()->with('success', 'Status Changed successfully!');
 
+    }
+
+    public function getCompanyBranches(Company $company)
+    {
+        // Fetch branches associated with the company
+        $branches = $company->branches()->get();
+
+        // Return the branches as a JSON response
+        return response()->json(['branches' => $branches]);
+    }
+
+
+    public function companywisebranch(Request $request)
+    {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id',
+            'branch_id' => 'required|array', // Expect an array of branch IDs
+            'branch_id.*' => 'exists:branches,id', // Validate each branch ID exists
+        ]);
+
+        // Loop through each branch ID and associate it with the company
+        foreach ($validated['branch_id'] as $branchId) {
+            CompanyWiseBranch::firstOrCreate(
+                [
+                    'company_id' => $validated['company_id'],
+                    'branch_id' => $branchId, // Matching condition
+                ]
+            );
+        }
+
+
+        return redirect()->back()->with('success', 'Branch assigned to a company successfully.');
     }
 }

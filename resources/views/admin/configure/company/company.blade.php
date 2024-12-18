@@ -8,7 +8,7 @@
             <h3 class="page-title-top">Company List</h3>
             <ul class="breadcrumbs">
                 <li class="nav-home">
-                    <a href="dashboard.php">
+                    <a href="/">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -127,6 +127,12 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-button-action">
+                                                                            <a href="#" data-company-id="{{$company->id}}"
+                                                                                class="btn btn-link btn-info company-branches"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-form">
+                                                                                <i class="fas fa-plus"></i>
+                                                                            </a>
                                                                             <a href="{{route('company.edit',$company->id)}}"
                                                                                 data-bs-toggle="tooltip" title=""
                                                                                 class="btn btn-link btn-primary "
@@ -154,6 +160,7 @@
                                                                         </form>
                                                                     </td>
                                                                 </tr>
+
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
@@ -173,10 +180,83 @@
         <!--Company Add Form-->
     </div>
 </div>
+
+ <!-- Modal form -->
+ <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-hidden="true"  >
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card mb-0">
+                    <div class="card-header text-left">
+                        <h3 class="fw-bolder text-info">Branch Assign</h3>
+                    </div>
+                    <form action="{{route('company.branch')}}" method="POST" >
+                        @csrf
+                        @method('POST')
+                        <div class="card-body">
+                            <div class="select2-input">
+                                <input type="hidden" id="company_id" name="company_id">
+                                <label class="form-label" for="branch_id">Select Branchs</label>
+                                <select name="branch_id[]" id="branch_id" class="form-select select2" multiple>
+                                    @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="text-end">
+                                <button
+                                    type="submit"
+                                    class="btn btn-round btn-info mt-4 mb-0" >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('script')
 <script>
     $(document).ready(function () {
+        $('.select2').select2({
+            theme: "bootstrap",
+            placeholder: "Select Branches",
+            allowClear: true
+        });
+
+        $(document).on('click', '.company-branches', function (e) {
+            e.preventDefault();
+
+            // Get the company ID from the button
+            const companyId = $(this).data('company-id');
+                $('#company_id').val(companyId);
+            // Perform AJAX request to fetch branches for the company
+            // $.ajax({
+            //     url: `/dashboard/companies/${companyId}/branches`, // Adjust the route as per your Laravel setup
+            //     method: 'GET',
+            //     success: function (response) {
+
+            //         $('#branch_id').val(null).trigger('change');
+
+            //         // Mark the branches returned by the server as selected
+            //         response.branches.forEach(function (branch) {
+
+            //             $(`#branch_id option[value="${branch.id}"]`).prop('selected', true);
+            //         });
+
+            //         // Reinitialize Select2 to reflect the changes
+            //         $('#branch_id').trigger('change');
+            //     },
+            //     error: function (xhr, status, error) {
+            //         console.error('Failed to load branches:', error);
+            //         alert('Failed to load branches. Please try again.');
+            //     }
+            // });
+        });
+
         // Attach click event to delete buttons
         $('.delete-btn').on('click', function (e) {
             e.preventDefault();

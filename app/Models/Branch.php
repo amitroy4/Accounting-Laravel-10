@@ -43,8 +43,17 @@ class Branch extends Model
         return $this->hasMany(Branch::class, 'parent_branch');
     }
 
+    /**
+     * A branch belongs to a company through companywisebranch.
+     */
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsToMany(Company::class, CompanyWiseBranch::class, 'branch_id', 'company_id');
     }
+
+    public function companyWiseBranch()
+    {
+        return $this->hasOne(CompanyWiseBranch::class, 'branch_id', 'id');
+    }
+
 }

@@ -192,15 +192,5 @@ class BranchController extends Controller
         return redirect()->back()->with('success', 'Status Changed successfully!');
 
     }
-    public function companywisebranch(Request $request,string $branchId)
-    {
-        $branch = Branch::find($branchId);
-        // dd($branch->id, $request->all());
-
-        $branch->update([
-            'company_id' => $request->company_id,
-        ]);
-
-        return redirect()->back()->with('success','Branch Added to a company.');
-    }
+    
 }

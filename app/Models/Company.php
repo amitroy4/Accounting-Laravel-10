@@ -26,12 +26,11 @@ class Company extends Model
     ];
 
     /**
-     * Relationship: A company has many entries in the companywisebranch table.
+     * A company has many branches through companywisebranch.
      */
     public function branches()
     {
-        return $this->hasMany(Branch::class, 'company_id');
+        return $this->hasManyThrough(Branch::class, CompanyWiseBranch::class, 'company_id', 'id', 'id', 'branch_id');
     }
-
 
 }

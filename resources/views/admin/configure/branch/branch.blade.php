@@ -36,8 +36,8 @@
                         <div class="c-h-double">
                             <div class="row">
                                 <div class="col-md-6 c-h-separator-r">
-                                    <h4 class="custom-c-h-main-title"><span class="c-h-icon"><i
-                                                class="fas fa-compress"></i></span>branch List</h4>
+                                    <h4 class="custom-c-h-main-title"><span class="c-h-icon">
+                                        <i class="fas fa-compress"></i></span>branch List</h4>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <a href="{{route('branch.create')}}" class="btn btn-primary btn-round">
@@ -119,9 +119,11 @@
 
                                                                     <td>
                                                                         @if ($branch->parentBranch)
-                                                                            {{ $branch->parentBranch->company ? $branch->parentBranch->company->company_name : '' }}
+                                                                            {{-- If the branch has a parent branch, get the company of the parent branch --}}
+                                                                            {{ $branch->parentBranch->company->isNotEmpty() ? $branch->parentBranch->company->first()->company_name : 'N/A' }}
                                                                         @else
-                                                                            {{ $branch->company ? $branch->company->company_name : '' }}
+                                                                            {{-- If the branch has no parent, get the company of the branch itself --}}
+                                                                            {{ $branch->company->isNotEmpty() ? $branch->company->first()->company_name : 'N/A' }}
                                                                         @endif
                                                                     </td>
                                                                     <td>{{$branch->branch_address}},{{$branch->branch_district}}, {{$branch->branch_zipcode}}</td>
@@ -170,42 +172,7 @@
                                                                         </form>
                                                                     </td>
                                                                 </tr>
-                                                                <!-- Modal form -->
-                                                                <div class="modal fade" id="modal-form_{{$branch->id}}" tabindex="-1" role="dialog" aria-hidden="true"  >
-                                                                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-body p-0">
-                                                                                <div class="card mb-0">
-                                                                                    <div class="card-header text-left">
-                                                                                        <h3 class="fw-bolder text-info">Company Assign</h3>
-                                                                                    </div>
-                                                                                    <form action="{{route('company.branch',$branch->id)}}" method="POST" >
-                                                                                        @csrf
-                                                                                        @method('POST')
-                                                                                        <div class="card-body">
-                                                                                            <div class="select2-input">
-                                                                                                <label class="form-label" for="company_id">Company</label>
-                                                                                                <select name="company_id" id="company_id" class="form-select select2">
-                                                                                                    <option value="">Select A Company</option>
-                                                                                                    @foreach ($companies as $company)
-                                                                                                    <option value="{{$company->id}}" {{$branch->company_id == $company->id ? 'selected' : ''}}>{{$company->company_name}}</option>
-                                                                                                    @endforeach
-                                                                                                </select>
-                                                                                            </div>
-                                                                                            <div class="text-end">
-                                                                                                <button
-                                                                                                    type="submit"
-                                                                                                    class="btn btn-round btn-info mt-4 mb-0" >
-                                                                                                    Save
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
 
                                                                 @endforeach
                                                             </tbody>
@@ -226,9 +193,6 @@
         <!--branch Add Form-->
     </div>
 </div>
-
-
-
 @endsection
 @push('script')
 <script>

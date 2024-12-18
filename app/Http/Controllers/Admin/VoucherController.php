@@ -55,4 +55,6 @@ class VoucherController extends Controller
         }
         return response()->json($html);
     }
+
+    
 }
