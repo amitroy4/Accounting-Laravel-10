@@ -23,65 +23,13 @@
 			</div>
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
-					<!--User Portion-->
-					<!--<div class="user">-->
-					<!--	<div class="avatar-sm float-start me-2">-->
-					<!--		<img src="{{asset('admin')}}/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">-->
-					<!--	</div>-->
-					<!--	<div class="info">-->
-					<!--		<a data-bs-toggle="collapse" href="#collapseExample" aria-expanded="true">-->
-					<!--			<span>-->
-					<!--				Hizrian-->
-					<!--				<span class="user-level">Administrator</span>-->
-					<!--				<span class="caret"></span>-->
-					<!--			</span>-->
-					<!--		</a>-->
-					<!--		<div class="clearfix"></div>-->
-
-					<!--		<div class="collapse in" id="collapseExample">-->
-					<!--			<ul class="nav">-->
-					<!--				<li>-->
-					<!--					<a href="#profile">-->
-					<!--						<span class="link-collapse">My Profile</span>-->
-					<!--					</a>-->
-					<!--				</li>-->
-					<!--				<li>-->
-					<!--					<a href="#edit">-->
-					<!--						<span class="link-collapse">Edit Profile</span>-->
-					<!--					</a>-->
-					<!--				</li>-->
-					<!--				<li>-->
-					<!--					<a href="#settings">-->
-					<!--						<span class="link-collapse">Settings</span>-->
-					<!--					</a>-->
-					<!--				</li>-->
-					<!--			</ul>-->
-					<!--		</div>-->
-					<!--	</div>-->
-					<!--</div>-->
-					<!--User Portion-->
 					<ul class="nav nav-primary mt-2">
 						<!--Dashboard Menue-->
 						<li class="nav-item active">
-							<a data-bs-toggle="collapse" href="#dashboard-nav">
+							<a href="{{route('dashboard')}}">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
-								<span class="caret"></span>
 							</a>
-							<div class="collapse" id="dashboard-nav">
-								<ul class="nav nav-collapse">
-									<li>
-										<a href="dashboard.php">
-											<span class="sub-item">Overview</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item">Analytics</span>
-										</a>
-									</li>
-								</ul>
-							</div>
 						</li>
 						<!--Dashboard Menue-->
 						<!--Chart of Accounts Menue-->

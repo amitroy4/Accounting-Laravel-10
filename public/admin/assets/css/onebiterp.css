@@ -10862,7 +10862,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 500 !important;
-    /* line-height: 40px; */
+    line-height: 40px;
     color: #332941!important;
 }
 .delete-btn:hover{

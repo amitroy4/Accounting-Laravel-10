@@ -15,7 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'Super Admin')->get();
         return view('admin.users.role.index',['roles' => $roles]);
     }
 
@@ -40,7 +40,7 @@ class RoleController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->back()->with('status',['success', 'Role Added Successfully.']);
+        return redirect()->back()->with(['success', 'Role Added Successfully.']);
     }
 
     /**
@@ -84,7 +84,9 @@ class RoleController extends Controller
         $role->delete();
         Session::flash('success','Role deleted Successfully.');
 
-        return redirect()->back();
+        return response()->json([
+            'message' => 'Role deleted Successfully.',
+        ], 200);
     }
 
     public function addPermission($roleId)

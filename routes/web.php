@@ -80,12 +80,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/status/{id}', [UserController::class, 'status'])->name('users.status');
     Route::get('/users/users-search/search-by-name', [UserController::class, 'usersSearchByName'])->name('users.users-search-by-name');
     // Route::post('/dashboard/users/roles/{role}', [RoleController::class, 'update'])->name('roles.update')->middleware('auth');
-    // Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy'])->name('roles.destroy')->middleware('auth');
 
     //Roles Routes
     Route::resource('/dashboard/users/roles', RoleController::class)->middleware('auth');
     Route::get('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermission'])->name('roles.give-permissions')->middleware('auth');
     Route::put('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermissionToRole'])->name('roles.add-permission')->middleware('auth');
+    Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     //Permissions Routes
     Route::resource('/dashboard/users/permissions', PermissionController::class)->middleware('auth');

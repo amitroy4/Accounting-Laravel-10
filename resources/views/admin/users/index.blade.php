@@ -504,11 +504,7 @@
                     success: function(response) {
                         // console.log(response);
                         $('#EditModal').modal('hide');
-                        showNotification(
-                            response.status,
-                            response.message,
-                            response.status
-                        );
+                        
                         location.reload();
                     },
                     error: function(xhr) {

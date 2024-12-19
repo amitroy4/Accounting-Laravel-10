@@ -105,7 +105,7 @@ class ChartOfAccountController extends Controller
         $chartofaccount->updated_by = auth()->id();
 
         $chartofaccount->save();
-
+        session()->flash('success','Chart of Account updated Successfully.');
         return response()->json(['message' => 'Chart of Account updated successfully!'], 200);
     }
 

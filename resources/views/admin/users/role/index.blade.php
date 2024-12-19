@@ -192,14 +192,9 @@
                 processData: false,
                 contentType: false,
                 success: function (res) {
-                    // console.log(res);
-                    if (res.status == 200) {
-                        // $("#sliderEditModal").modal('hide');
-                        $('#role-table').load(location.href + ' #role-table');
-                        $('#roleUpdateModal').modal('hide');
-                        Swal.fire('Saved!', '', 'success')
-                    }
-
+                    location.reload();
+                    $('#roleUpdateModal').modal('hide');
+                    Swal.fire('Saved!', '', 'success')
                 },
                 error: function (xhr, textStatus, errorThrown) {
 
@@ -209,30 +204,39 @@
         });
 
         $('.delete').on('click', function (event) {
-                const id = $(this).data('id');
-                console.log(id);
+            const id = $(this).data('id');
+            console.log(id);
 
-                Swal.fire({
-                    title: 'রোল ডিলেট করবেন?',
-                    text: "আপনি এটি পুনরুদ্ধারিত করতে পারবেন না!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'হ্যা'
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: `{{url('/dashboard/users/roles/${id}/delete')}}`,
-                            method: 'DELETE',
-                            success: function(response) {
-                                $('#role-table').load(location.href + ' #role-table');
-                                Swal.fire('Saved!', '', 'success')
-                            }
-                        });
-                    } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this data!",
+                icon: "warning",
+                buttons: ["Cancel", "Yes, delete it!"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (willDelete) {
+                    $.ajax({
+                        url: `/dashboard/users/roles/${id}/delete`,
+                        method: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            swal("Deleted!", response.message, "success")
+                                .then(() => {
+                                    location.reload();
+                                });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            console.error('Response:', xhr.responseText);
+                            swal("Error!", errorMessage, "error");
+                        }
+                    });
+                }
+                else{
+                    swal("Your data is safe!");
                 }
             })
         });

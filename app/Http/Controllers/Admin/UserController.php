@@ -139,11 +139,11 @@ class UserController extends Controller
                 ]);
                 $user->syncRoles($request->role);
             }
-            session()->flash('status', ['type' => 'success', 'message' => 'ইউজার সফলভাবে আপডেট হয়েছে']);
-            return response()->json(['status' => 'success', 'message' => 'ইউজার সফলভাবে আপডেট হয়েছে']);
+            session()->flash('success','User updated Successfully.');
+            return response()->json(['status' => 'success', 'message' => 'User updated Successfully']);
         }else{
-            session()->flash('status', ['type' => 'danger', 'message' => 'ইউজার আপডেট সফলভাবে হয়নি']);
-            return response()->json(['status' => 'danger', 'message' => 'ইউজার আপডেট সফলভাবে হয়নি']);
+            session()->flash('danger','User update failed');
+            return response()->json('danger', 'User update failed');
         }
     }
 
@@ -154,7 +154,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        session()->flash('status', ['type' => 'success', 'message' => 'ইউজার সফলভাবে ডিলেট হয়েছে']);
+        session()->flash('success','ইউজার সফলভাবে ডিলেট হয়েছে');
         return response()->json(['status' => 'success', 'message' => 'ইউজার সফলভাবে ডিলেট হয়েছে']);
     }
 
@@ -162,13 +162,13 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->status = $user->status == 1 ? 0 : 1;
         $user->save();
-        return redirect()->route('users.index')->with('status', ['type' => 'success', 'message' => 'ইউজার স্ট্যাটাস সফলভাবে আপডেট হয়েছে']);
+        return redirect()->route('users.index')->with('success', 'User Status Changed Successfully');
     }
 
     public function assignMemberRemove($memberId, $userId){
         $user = User::findOrFail($userId);
         $user->removeMemberAssign($memberId);
-        session()->flash('status', ['type' => 'success', 'message' => 'সদস্য সফলভাবে সরানো হয়েছে']);
+        session()->flash('success', 'সদস্য সফলভাবে সরানো হয়েছে');
         return response()->json(['status' => 'success', 'message' => 'সদস্য সফলভাবে সরানো হয়েছে']);
     }
 
