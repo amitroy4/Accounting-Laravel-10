@@ -5,7 +5,7 @@
 				<div class="logo-header" data-background-color="blue">
 
 					<a href="dashboard.php" class="logo">
-						<img src="{{asset('admin')}}/assets/img/onebiterp_logo_white.png" alt="navbar brand"  class="navbar-brand" height="35">
+						<img src="{{ asset('storage/' . $websetting->system_logo) }}" alt="navbar brand"  class="navbar-brand" height="35">
 					</a>
 					<div class="nav-toggle">
 						<button class="btn btn-toggle toggle-sidebar">
@@ -152,19 +152,19 @@
 							<div class="collapse" id="user-nav">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="{{route('users.index')}}">
 										    <i class="fas fa-user-plus"></i>
-											<span class="sub-item">New User</span>
+											<span class="sub-item">Manage User</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="{{route('roles.index')}}">
 										    <i class="fas fa-users-cog"></i>
-											<span class="sub-item">Manage Users</span>
+											<span class="sub-item">User Roles</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="{{route('permissions.index')}}">
 										    <i class="fas fa-user-shield"></i>
 											<span class="sub-item">User Permission</span>
 										</a>
@@ -216,6 +216,12 @@
 										<a href="{{route('currency_type.index')}}">
 										    <i class="fas fa-pen-nib"></i>
 											<span class="sub-item">Currency type</span>
+										</a>
+									</li>
+                                    <li>
+										<a href="{{route('websetting.index')}}">
+										    <i class="fas fa-pen-nib"></i>
+											<span class="sub-item">Settings</span>
 										</a>
 									</li>
 								</ul>

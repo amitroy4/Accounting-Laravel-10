@@ -235,7 +235,6 @@ class ProjectController extends Controller
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('uploads/projectapprovaldocuments', $fileName, 'public');
 
-
                 ProjectApprovalDocument::create([
                     'project_id' => $request->project_code, // Use the ID of the saved funding organization
                     'file_name' => $fileName,

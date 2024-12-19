@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\WebSetting;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $websetting = WebSetting::first(); // Or fetch specific records as needed
+
+        // Share the `websetting` data globally in all views
+        View::share('websetting', $websetting);
     }
 }

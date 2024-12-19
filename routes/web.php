@@ -2,14 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CurrencyTypeController;
 use App\Http\Controllers\Admin\ChartOfAccountController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\FundingOrganizationController;
-use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\WebSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +70,28 @@ Route::middleware('auth')->group(function () {
 
     Route::get('vouchers/index', [VoucherController::class,'index'])->name('vouchers.index');
     Route::get('vouchers/create', [VoucherController::class,'create'])->name('vouchers.create');
+
+    //Users Routes
+    //Users Routes
+    Route::resource('users',UserController::class);
+    Route::get('/users/members/{id}/get-member', [UserController::class, 'getMember'])->name('users.get-member');
+    Route::post('/users/members/{id}/assign', [UserController::class, 'assignMember'])->name('users.assign-member');
+    Route::delete('/users/assign-member/remove/{memberId}/{userId}', [UserController::class, 'assignMemberRemove'])->name('users.assign-member.remove');
+    Route::get('/users/status/{id}', [UserController::class, 'status'])->name('users.status');
+    Route::get('/users/users-search/search-by-name', [UserController::class, 'usersSearchByName'])->name('users.users-search-by-name');
+    // Route::post('/dashboard/users/roles/{role}', [RoleController::class, 'update'])->name('roles.update')->middleware('auth');
+    // Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy'])->name('roles.destroy')->middleware('auth');
+
+    //Roles Routes
+    Route::resource('/dashboard/users/roles', RoleController::class)->middleware('auth');
+    Route::get('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermission'])->name('roles.give-permissions')->middleware('auth');
+    Route::put('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermissionToRole'])->name('roles.add-permission')->middleware('auth');
+
+    //Permissions Routes
+    Route::resource('/dashboard/users/permissions', PermissionController::class)->middleware('auth');
+    Route::delete('/dashboard/users/permissions/bulkdelete', [PermissionController::class, 'bulkDelete'])->name('permissions.bulk_delete');
+
+    Route::resource('/dashboard/websetting',WebSettingController::class);
 
 });
 
