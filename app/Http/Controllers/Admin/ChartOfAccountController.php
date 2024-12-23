@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\ChartOfAccount;
 use App\Models\Company;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Models\ChartOfAccount;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ChartOfAccountController extends Controller
 {
@@ -15,13 +16,28 @@ class ChartOfAccountController extends Controller
      */
     public function index()
     {
-        $companies = Company::where('status',1)->get();
-        $projects = Project::where('status',1)->get();
-        $parent_heads = ChartOfAccount::where('is_active',1)->where('has_leaf',0)->get();
-        $chart_of_accounts = ChartOfAccount::with('child_account.child_account.child_account.child_account.child_account.child_account.child_account.child_account')
-                            ->where('is_active',1)
-                            ->where('parent_coa_id',null)
-                            ->get();
+        if(Auth::user()->isSuperAdmin()){
+            $companies = Company::where('status',1)->with('branches.projects')->get();
+            $projects = Project::where('status',1)->get();
+            $parent_heads = ChartOfAccount::where('is_active',1)->where('has_leaf',0)->get();
+            $chart_of_accounts = ChartOfAccount::with('child_account.child_account.child_account.child_account.child_account.child_account.child_account.child_account')
+                                ->where('is_active',1)
+                                ->where('parent_coa_id',null)
+                                ->get();
+            // dd($companies);
+        }else{
+            $userCompanyId = Auth::user()->branch->company->first()->id ;
+            // dd($userCompanyId);
+            $companies = Company::where('status',1)->where('id',$userCompanyId)->with('branches.projects')->get();
+            $projects = Project::where('status',1)->where('branch_id',Auth::user()->branch_id)->get();
+            $parent_heads = ChartOfAccount::where('is_active',1)->where('has_leaf',1)->where('company_id',$userCompanyId)->get();
+            $chart_of_accounts = ChartOfAccount::with('child_account.child_account.child_account.child_account.child_account.child_account.child_account.child_account')
+                                ->where('is_active',1)
+                                ->where('parent_coa_id',null)
+                                ->where('company_id',Auth::user()->company_id)
+                                ->get();
+        }
+
         // dd($chart_of_accounts);
         return view('admin.chart-of-account.index',compact('companies','parent_heads','chart_of_accounts','projects'));
     }

@@ -3,7 +3,7 @@
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-    
+
     .tree,
     .tree ul {
         list-style-type: none;
@@ -483,6 +483,34 @@
         });
 
     });
+
+    $(document).ready(function () {
+        $('#company-select').on('change', function () {
+            const companyId = $(this).val();
+            const projectSelect = $('#project-select');
+
+            // Clear the project dropdown
+            projectSelect.empty();
+            projectSelect.append('<option value="">Select Project</option>');
+
+            if (companyId) {
+                // Make AJAX call to fetch projects
+                $.ajax({
+                    url: `/get-projects/${companyId}`,
+                    type: 'GET',
+                    success: function (projects) {
+                        projects.forEach(function (project) {
+                            projectSelect.append(`<option value="${project.id}">${project.project_name}</option>`);
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching projects:', xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
 
 </script>
 @endpush

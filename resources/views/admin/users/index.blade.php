@@ -84,12 +84,22 @@
                                 <td width="50%">{{ $user->email }}</td>
                             </tr>
                             <tr>
-                                <td width="50%" ><strong>BloodType:</strong></td>
-                                <td width="50%">{{ $user->bloodType }}</td>
+                                <td width="50%" ><strong>Company:</strong></td>
+                                <td width="50%">
+                                    @if ($user->branch)
+                                    @if ($user->branch->parentBranch)
+                                        {{-- If the branch has a parent branch, get the company of the parent branch --}}
+                                        {{ $user->branch->parentBranch->company->isNotEmpty() ? $user->branch->parentBranch->company->first()->company_name : 'N/A' }}
+                                    @else
+                                        {{-- If the branch has no parent, get the company of the branch itself --}}
+                                        {{ $user->branch->company->isNotEmpty() ? $user->branch->company->first()->company_name : 'N/A' }}
+                                    @endif
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
-                                <td width="50%" ><strong>Address:</strong></td>
-                                <td width="50%">{{ $user->address }}</td>
+                                <td width="50%" ><strong>Branch:</strong></td>
+                                <td width="50%">{{ $user->branch ? $user->branch->branch_name : ''}}</td>
                             </tr>
                             <tr>
                                 <td width="50%" ><strong>User Role:</strong></td>
@@ -177,11 +187,16 @@
                     @enderror
                     </div>
                     <div class="form-group">
-                        <label for="" class="form-lable">Address</label>
-                    <input class="form-control" type="text" placeholder="Type Address" name="address">
-                    @error('address')
-                        <span class="text-danger">{{$message}}</span>
-                    @enderror
+                        <label for="" class="form-lable">Branch</label>
+                        <select name="branch_id" id="branch_id" class="form-control select2">
+                            <option value="">Select Branch</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                            @endforeach
+                        </select>
+                        @error('branch_id')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="" class="form-lable">Phone<span class="text-danger">*</span> </label>
@@ -194,13 +209,6 @@
                         <label for="" class="form-lable">Email</label>
                     <input class="form-control" type="email" placeholder="Type Email" name="email">
                     @error('email')
-                        <span class="text-danger">{{$message}}</span>
-                    @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="form-lable">Blood Group</label>
-                    <input class="form-control" type="text" placeholder="Type Blood Group" name="bloodType">
-                    @error('bloodType')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                     </div>
@@ -270,11 +278,16 @@
                   @enderror
                 </div>
                 <div class="form-group">
-                    <label for="" class="form-lable">Address</label>
-                  <input class="form-control" type="text" placeholder="Type Address" name="address">
-                  @error('address')
-                    <span class="text-danger">{{$message}}</span>
-                  @enderror
+                    <label for="" class="form-lable">Branch</label>
+                    <select name="branch_id" id="branch_id" class="form-control select2">
+                        <option value="">Select Branch</option>
+                        @foreach ($branches as $branch)
+                            <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                        @endforeach
+                    </select>
+                    @error('branch_id')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="" class="form-lable">Phone<span class="text-danger">*</span> </label>
@@ -287,13 +300,6 @@
                     <label for="" class="form-lable">Email</label>
                   <input class="form-control" type="email" placeholder="Type Email address" name="email">
                   @error('email')
-                    <span class="text-danger">{{$message}}</span>
-                  @enderror
-                </div>
-                <div class="form-group">
-                    <label for="" class="form-lable">Blood Group</label>
-                  <input class="form-control" type="text" placeholder="Blood Group Type" name="bloodType">
-                  @error('bloodType')
                     <span class="text-danger">{{$message}}</span>
                   @enderror
                 </div>
@@ -427,11 +433,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            // $.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
+
             $(document).on('change', '.member-select', function() {
                 $('.member-select').select2({
                     placeholder: "সদস্য নির্বাচন করুন",
@@ -471,10 +473,9 @@
                         form.attr('action', `/users/${id}`);
                         form.find('input[name="name"]').val(response.user.name);
                         form.find('input[name="username"]').val(response.user.username);
-                        form.find('input[name="address"]').val(response.user.address);
+                        form.find('input[name="branch_id"]').prop('selected',response.branch_id).trigger('change');
                         form.find('input[name="phone"]').val(response.user.phone);
                         form.find('input[name="email"]').val(response.user.email);
-                        form.find('input[name="bloodType"]').val(response.user.bloodType);
                         form.find('input[name="status"]').prop('checked', response.user.status);
                         form.find('#role').val(response.user.roles[0].name);
 
@@ -504,7 +505,7 @@
                     success: function(response) {
                         // console.log(response);
                         $('#EditModal').modal('hide');
-                        
+
                         location.reload();
                     },
                     error: function(xhr) {

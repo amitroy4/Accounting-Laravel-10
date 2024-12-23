@@ -89,7 +89,9 @@
                                             </a>
                                             @endcan
                                             @can('delete permission')
-                                            <a href="{{route('permissions.destroy',$permission->id)}}" class="btn btn-sm font-sm btn-outline-danger rounded delete">
+                                            <a href="{{route('permissions.destroy',$permission->id)}}"
+                                                data-permission-id="{{$permission->id}}"
+                                                class="btn btn-sm font-sm btn-outline-danger rounded delete">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                             @endcan
@@ -234,12 +236,7 @@
                 contentType: false,
                 success: function (response) {
                     $('#permissionUpdateModal').modal('hide');
-                    showNotification(
-                        response.status,
-                        response.message,
-                        response.status
-                    );
-                    $('#permission-table').load(location.href + ' #permission-table');
+                    location.reload();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $("#permissionUpdateModal").modal('hide');
@@ -250,41 +247,41 @@
         $('.delete').on('click', function (event) {
             event.preventDefault(); // Prevent the default link behavior
 
-            var url = $(this).attr('href');
-            var row = $(this).closest('tr');
+            const id = $(this).data('permission-id');
+            console.log(id);
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this data!",
+                icon: "warning",
+                buttons: ["Cancel", "Yes, delete it!"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (willDelete) {
                     $.ajax({
-                        url: url,
-                        type: 'DELETE',
-                        data: form.serialize(),
-                        success: function (response) {
-                            Swal.fire(
-                                'Deleted!',
-                                response.success,
-                                'success'
-                            );
-                            row.remove(); // Remove the row from the table
+                        url: `/dashboard/users/permissions/${id}/delete`,
+                        method: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
                         },
-                        error: function (response) {
-                            Swal.fire(
-                                'Error!',
-                                'There was an error deleting the permission.',
-                                'error'
-                            );
+                        success: function (response) {
+                            swal("Deleted!", response.message, "success")
+                                .then(() => {
+                                    location.reload();
+                                });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            console.error('Response:', xhr.responseText);
+                            swal("Error!", errorMessage, "error");
                         }
                     });
                 }
-            });
+                else{
+                    swal("Your data is safe!");
+                }
+            })
         });
 
         $('#bulkDeleteButton').on('click', function (event) {
@@ -300,7 +297,7 @@
                 console.log(selectedPermissions);
             });
 
-            Swal.fire({
+            Swal({
                 title: 'Are you sure?',
                 text: 'You won\'t be able to revert this!',
                 icon: 'warning',
@@ -318,7 +315,7 @@
                             'selected_permissions': selectedPermissions
                         },
                         success: function (response) {
-                            Swal.fire(
+                            swal(
                                 'Deleted!',
                                 response.success,
                                 'success'

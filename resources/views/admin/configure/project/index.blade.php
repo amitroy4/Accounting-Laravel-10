@@ -121,7 +121,7 @@
                                                                     </td>
                                                                     <td>{{$project->parentProject?$project->parentProject->project_name:'N/A'}}
                                                                     </td>
-                                                                    <td>{{$project->project_budget}} </td>
+                                                                    <td>{{$project->branch?$project->branch->branch_name:'N/A'}} </td>
                                                                     <td>{{$project->project_budget}} </td>
                                                                     <td>
                                                                         @if ($project->status==1)

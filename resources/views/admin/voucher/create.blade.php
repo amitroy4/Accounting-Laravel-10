@@ -486,6 +486,7 @@
                                                         <label for="defaultSelect">Debit Ledger Head</label>
                                                         <select class="form-select form-control select2" id="debitLedgerHead">
                                                             <option value="">Select Chart of Account</option>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
@@ -748,24 +749,21 @@
 @endsection
 @push('script')
 <script>
-    $('#datepicker').datetimepicker({
-        format: 'MM/DD/YYYY',
-    })
-    $('#datepicker2').datetimepicker({
-        format: 'MM/DD/YYYY',
-    })
-
-    $('.select2').select2({
-        theme: "bootstrap",
-        placeholder: "Select A Project",
-        allowClear: true
-    });
-
-
 
     $(document).ready(function () {
 
+        $('#datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+        })
+        $('#datepicker2').datetimepicker({
+            format: 'MM/DD/YYYY',
+        })
 
+        $('.select2').select2({
+            theme: "bootstrap",
+            placeholder: "Select A Project",
+            allowClear: true
+        });
         // Listen for changes on the Project dropdown
         $('#projectDropdown').on('change', function () {
             const projectId = $(this).val();

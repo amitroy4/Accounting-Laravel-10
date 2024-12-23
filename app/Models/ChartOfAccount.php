@@ -11,6 +11,7 @@ class ChartOfAccount extends Model
 
     protected $fillable = [
         'company_id',
+        'project_id',
         'created_by',
         'updated_by',
         'parent_coa_id',
@@ -103,6 +104,11 @@ class ChartOfAccount extends Model
     public function child_account()
     {
         return $this->hasMany(ChartOfAccount::class, 'parent_coa_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 }
 

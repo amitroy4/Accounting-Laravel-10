@@ -98,10 +98,10 @@ class PermissionController extends Controller
         $permission->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => 'Permission deleted successfully.']);
+            return response()->json(['success' =>200, 'message' => 'Permission deleted successfully.']);
         }
 
-        session()->flash('status',['success' => 'Permission deleted Successfully.']);
+        session()->flash('status',['success' => 400, 'message' => 'Permission deleted Successfully.']);
         return redirect()->back();
     }
 

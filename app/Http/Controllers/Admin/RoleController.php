@@ -121,6 +121,8 @@ class RoleController extends Controller
                 return $parsed['action']; // Group by action within category
             });
         });
+        // dd($groupedPermissions);
+
         // $rolePermission = $role->permissions->pluck('name');
         $rolePermission = $role->permissions;
 

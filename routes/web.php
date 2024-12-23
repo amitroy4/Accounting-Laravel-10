@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -9,11 +10,11 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\WebSettingController;
 use App\Http\Controllers\Admin\CurrencyTypeController;
 use App\Http\Controllers\Admin\ChartOfAccountController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\FundingOrganizationController;
-use App\Http\Controllers\Admin\WebSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,10 @@ use App\Http\Controllers\Admin\WebSettingController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/storage_link', function () {
+    Artisan::call('storage:link');
+    return redirect()->back()->with('success', 'Storage link created successfully.');
+});
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -72,7 +77,6 @@ Route::middleware('auth')->group(function () {
     Route::get('vouchers/create', [VoucherController::class,'create'])->name('vouchers.create');
 
     //Users Routes
-    //Users Routes
     Route::resource('users',UserController::class);
     Route::get('/users/members/{id}/get-member', [UserController::class, 'getMember'])->name('users.get-member');
     Route::post('/users/members/{id}/assign', [UserController::class, 'assignMember'])->name('users.assign-member');
@@ -90,6 +94,7 @@ Route::middleware('auth')->group(function () {
     //Permissions Routes
     Route::resource('/dashboard/users/permissions', PermissionController::class)->middleware('auth');
     Route::delete('/dashboard/users/permissions/bulkdelete', [PermissionController::class, 'bulkDelete'])->name('permissions.bulk_delete');
+    Route::delete('/dashboard/users/permissions/{id}/delete', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
     Route::resource('/dashboard/websetting',WebSettingController::class);
 

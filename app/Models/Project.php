@@ -64,4 +64,9 @@ class Project extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function chartofaccounts()
+    {
+        return $this->hasMany(ChartOfAccount::class, 'project_id');
+    }
+
 }

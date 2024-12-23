@@ -27,6 +27,7 @@ class User extends Authenticatable
         'phone',
         'bloodType',
         'status',
+        'branch_id',
     ];
 
     /**
@@ -57,6 +58,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->hasRole('Admin');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
 
 }

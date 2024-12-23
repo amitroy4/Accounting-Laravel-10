@@ -64,4 +64,9 @@ class Branch extends Model
         return $this->hasMany(Project::class);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'branch_id', 'id');
+    }
+
 }

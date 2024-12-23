@@ -56,9 +56,6 @@ class BranchController extends Controller
             'status' => 'nullable|boolean',
         ]);
 
-        // dd($validatedData);
-
-
         // Handle file upload
         if ($request->hasFile('branch_logo')) {
             $validatedData['branch_logo'] = $request->file('branch_logo')->store('uploads/branch_logos', 'public');

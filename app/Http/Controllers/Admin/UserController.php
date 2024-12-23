@@ -74,10 +74,9 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'username' => $request->username,
-                'address' => $request->address,
+                'branch_id' => $request->branch_id,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'bloodType' => $request->bloodType,
                 'password' => Hash::make($request->password),
                 'status' => $request->has('status'), // Set status based on checkbox value
             ]);
@@ -121,20 +120,18 @@ class UserController extends Controller
                 $user->update([
                     'name' => $request->name,
                     'username' => $request->username,
-                    'address' => $request->address,
+                    'branch_id' => $request->branch_id,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'bloodType' => $request->bloodType,
                 ]);
                 $user->syncRoles($request->role);
             }else{
                 $user->update([
                     'name' => $request->name,
                     'username' => $request->username,
-                    'address' => $request->address,
+                    'branch_id' => $request->branch_id,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'bloodType' => $request->bloodType,
                     'password' => Hash::make($request->password),
                 ]);
                 $user->syncRoles($request->role);
@@ -154,8 +151,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        session()->flash('success','ইউজার সফলভাবে ডিলেট হয়েছে');
-        return response()->json(['status' => 'success', 'message' => 'ইউজার সফলভাবে ডিলেট হয়েছে']);
+        session()->flash('success','User deleted Successfully.');
+        return response()->json(['status' => 'success', 'message' => 'User deleted Successfully.']);
     }
 
     public function status($id){
