@@ -46,60 +46,59 @@ class ProjectController extends Controller
     {
         // dd($request->all());
         // Validate incoming data
-    $validatedData = $request->validate([
-        'project_name' => 'required|string|max:255',
-        'project_short_name' => 'nullable|string|max:255',
-        'project_code' => 'nullable|string|max:255',
-        'parent_project_id' => 'nullable|integer',
-        'project_area' => 'nullable|string|max:255',
-        'project_category' => 'nullable|string|max:255',
-        'project_budget' => 'nullable|numeric',
-        'currency_type' => 'nullable|string|max:255',
-        'is_core' => 'required|boolean',
-        'status' => 'required|boolean',
-        'project_start_date' => 'nullable|date',
-        'project_end_date' => 'nullable|date',
-        'approval_type' => 'nullable|string|max:255',
-        'project_approval_authority' => 'nullable|string|max:255',
-        'approval_reference_number' => 'nullable|string|max:255',
-        'approval_date' => 'nullable|date',
-        'branch_id' => 'nullable|exists:branches,id',
-    ]);
+        $validatedData = $request->validate([
+            'project_name' => 'required|string|max:255',
+            'project_short_name' => 'nullable|string|max:255',
+            'project_code' => 'nullable|string|max:255',
+            'parent_project_id' => 'nullable|integer',
+            'project_area' => 'nullable|string|max:255',
+            'project_category' => 'nullable|string|max:255',
+            'project_budget' => 'nullable|numeric',
+            'currency_type' => 'nullable|string|max:255',
+            'is_core' => 'required|boolean',
+            'status' => 'required|boolean',
+            'project_start_date' => 'nullable|date',
+            'project_end_date' => 'nullable|date',
+            'approval_type' => 'nullable|string|max:255',
+            'project_approval_authority' => 'nullable|string|max:255',
+            'approval_reference_number' => 'nullable|string|max:255',
+            'approval_date' => 'nullable|date',
+            'branch_id' => 'nullable|exists:branches,id',
+        ]);
 
-    // Create a new project record
-    $project = Project::create($validatedData);
+        // Create a new project record
+        $project = Project::create($validatedData);
 
 
-    if($request->funding_organization_id){
-        foreach ($request->funding_organization_id as $key => $organizationId) {
-            ProjectFunding::create([
-                'project_id' => $project->id,
-                'funding_organization_id' => $organizationId,
-                'funded_percentage' => $request->funded_percentage[$key],
-                'funded_amount' => $request->funded_amount[$key],
-            ]);
+        if($request->funding_organization_id){
+            foreach ($request->funding_organization_id as $key => $organizationId) {
+                ProjectFunding::create([
+                    'project_id' => $project->id,
+                    'funding_organization_id' => $organizationId,
+                    'funded_percentage' => $request->funded_percentage[$key],
+                    'funded_amount' => $request->funded_amount[$key],
+                ]);
+            }
         }
-    }
 
 
-     // Handle file uploads
-     if ($request->hasFile('approval_documents')) {
-        foreach ($request->file('approval_documents') as $file) {
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('uploads/projectapprovaldocuments', $fileName, 'public');
+        // Handle file uploads
+        if ($request->hasFile('approval_documents')) {
+            foreach ($request->file('approval_documents') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads/projectapprovaldocuments', $fileName, 'public');
 
-            // Save file information in the `approval_documents` table
-            ProjectApprovalDocument::create([
-                'project_id' => $project->id,
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-            ]);
+                // Save file information in the `approval_documents` table
+                ProjectApprovalDocument::create([
+                    'project_id' => $project->id,
+                    'file_name' => $fileName,
+                    'file_path' => $filePath,
+                ]);
+            }
         }
-    }
 
-
-    // Redirect or return a response
-    return redirect()->route('project.index')->with('success', 'Project created successfully!');
+        // Redirect or return a response
+        return redirect()->route('project.index')->with('success', 'Project created successfully!');
     }
 
     /**

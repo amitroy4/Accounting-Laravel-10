@@ -23,7 +23,7 @@ class VoucherController extends Controller
         if(Auth::user()->isSuperAdmin()){
             $companies = Company::where('status',1)->get();
             $projects = Project::where('status',1)->get();
-            $heads = ChartOfAccount::where('is_active',1)->where('has_leaf',0)->get();
+            $heads = ChartOfAccount::where('is_active',1)->where('has_leaf',1)->get();
 
         }else{
             $companies = Company::where('status',1)->where('id',Auth::user()->company_id)->get();
@@ -33,7 +33,7 @@ class VoucherController extends Controller
         }
         $currency_types = CurrencyType::where('status',1)->get();
         // dd($projects);
-        return view("admin.voucher.create",compact("companies","projects","currency_types"));
+        return view("admin.voucher.create",compact("companies","projects","currency_types",'heads'));
     }
 
 

@@ -486,7 +486,9 @@
                                                         <label for="defaultSelect">Debit Ledger Head</label>
                                                         <select class="form-select form-control select2" id="debitLedgerHead">
                                                             <option value="">Select Chart of Account</option>
-                                                            
+                                                            @foreach ($heads as $head)
+                                                            <option value="{{$head->id}}">{{$head->account_name}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -807,8 +809,17 @@
         // Handle dynamic row addition
         $(document).on('click', '.add-row', function (e) {
             e.preventDefault();
+            const ledgerHeads = @json($heads);
+            console.log(ledgerHeads);
 
             const newRowId = $('#dynamic-rows-container .ledger-row').length + 1;
+
+            // Generate options for the select dropdown
+            let ledgerOptions = '<option value="">Select Chart of Account</option>';
+            ledgerHeads.forEach(head => {
+                ledgerOptions += `<option value="${head.id}">${head.account_name}</option>`;
+            });
+
             const newRow = `
                 <div class="ledger-row" data-row-id="${newRowId}">
                     <div class="row">
@@ -816,7 +827,7 @@
                             <div class="form-group">
                                 <label for="debitLedgerHead-${newRowId}">Debit Ledger Head</label>
                                 <select class="form-select form-control select2 debitLedgerHead" id="debitLedgerHead-${newRowId}">
-                                    <option value="">Select Chart of Account</option>
+                                    ${ledgerOptions}
                                 </select>
                             </div>
                         </div>

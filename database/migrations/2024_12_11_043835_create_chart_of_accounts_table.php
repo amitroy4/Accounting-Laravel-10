@@ -25,6 +25,11 @@ return new class extends Migration
             $table->boolean('is_auto_head')->default(true);
             $table->boolean('is_active')->default(true);
             $table->unsignedBigInteger('has_leaf')->default(false);
+            $table->enum('payment_type', ['cash', 'bank', 'cheque', 'card', 'other'])->default('cash');
+            $table->decimal('opening_balance', 15, 2)->default(0.00);
+            $table->decimal('closing_balance', 15, 2)->default(0.00);
+            $table->date('closing_date')->nullable();
+            $table->date('opening_date')->nullable();
 
             // Corrected foreign key constraints
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict');
