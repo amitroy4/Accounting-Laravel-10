@@ -70,6 +70,7 @@ class ChartOfAccountController extends Controller
         $chartofaccount->project_id = $request->project_id;
         $chartofaccount->account_name = $request->account_name;
         $chartofaccount->parent_coa_id = $request->parent_coa_id;
+        $chartofaccount->payment_type = $request->payment_type;
         $chartofaccount->has_leaf = $request->has_leaf ?? 0;
         $chartofaccount->created_by = auth()->user()->id;
 
@@ -118,6 +119,7 @@ class ChartOfAccountController extends Controller
         $chartofaccount->project_id = $request->project_id;
         $chartofaccount->account_name = $request->account_name;
         $chartofaccount->parent_coa_id = $request->parent_coa_id ?? null;
+        $chartofaccount->payment_type = $request->payment_type;
         $chartofaccount->has_leaf = $request->has_leaf ?? 0;
         $chartofaccount->updated_by = auth()->id();
 

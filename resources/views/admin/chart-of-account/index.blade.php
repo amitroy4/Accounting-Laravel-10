@@ -110,7 +110,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="defaultSelect">Company</label>
-                                                    <select class="form-select form-control select2" id="company-select2" name="company_id">
+                                                    <select class="form-select form-control select2" id="company-select" name="company_id">
                                                         <option value="">Select Company</option>
                                                         @foreach ($companies as $company)
                                                         <option value="{{ $company->id }}">{{ $company->company_name }}</option>
@@ -124,7 +124,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="project-select2">Project</label>
-                                                    <select class="form-select form-control select2" id="project-select2" name="project_id">
+                                                    <select class="form-select form-control select2" id="project-select" name="project_id">
                                                         <option value="">Select Project</option>
                                                     </select>
                                                     @error('project_id')
@@ -157,6 +157,19 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label for="paymentType">Payment Type</label>
+                                                    <select class="form-select form-control" id="paymentType" name="payment_type">
+                                                        <option value="" selected>Select Payment Type</option>
+                                                        <option value="cash">Cash</option>
+                                                        <option value="bank">Bank</option>
+                                                        <option value="cheque">Cheque</option>
+                                                        <option value="card">Card</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label for="defaultSelect">Is Transaction Head</label>
                                                     <select class="form-select form-control" id="defaultSelect" name="has_leaf">
                                                         <option value="1">Yes</option>
@@ -164,6 +177,7 @@
                                                     </select>
                                                 </div>
                                             </div>
+
                                         </div>
                                         <!--Create Chart of Accounts Form-->
                                         <!--Submit & Cancel Button-->
@@ -198,7 +212,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="defaultSelect">Company</label>
-                                                <select class="form-select form-control select2" id="company-select" name="company_id">
+                                                <select class="form-select form-control select2" id="company-select2" name="company_id">
                                                     <option value="">Select Company</option>
                                                     @foreach ($companies as $company)
                                                     <option value="{{ $company->id }}">{{ $company->company_name }}</option>
@@ -212,7 +226,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="project-select-2">Project</label>
-                                                <select class="form-select form-control select2" id="project-select" name="project_id">
+                                                <select class="form-select form-control select2" id="project-select2" name="project_id">
                                                     <option value="">Select Project</option>
                                                 </select>
                                                 @error('project_id')
@@ -242,6 +256,19 @@
                                                 @error('parent_coa_id')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="paymentType2">Payment Type</label>
+                                                <select class="form-select form-control" id="paymentType2" name="payment_type">
+                                                    <option value="" selected>Select Payment Type</option>
+                                                    <option value="cash">Cash</option>
+                                                    <option value="bank">Bank</option>
+                                                    <option value="cheque">Cheque</option>
+                                                    <option value="card">Card</option>
+                                                    <option value="other">Other</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -304,7 +331,7 @@
                                class="coa-header {{ $isRootAccount ? 'disabled' : '' }}"
                                data-account-id="{{ $account->id }}"
                                @if($isRootAccount) style="pointer-events: none; " @endif>
-                                {{ $account->account_name }}
+                                {{ $account->account_name }}({{ $account->payment_type }})
                             </a>
                                 {{-- <a href="#" class="coa-header" data-account-id="{{$account->id}}">{{ $account->account_name }}</a> --}}
 
@@ -345,6 +372,7 @@
     $('.select2').select2({
         theme: "bootstrap"
     });
+
     $('#submit-btn').on('click', function(e){
         e.preventDefault();
         var form = $(this).closest('form');
@@ -372,8 +400,8 @@
 
                 // Populate the form fields with the data
                 $('#account_id').val(response.id);
-                $('#company_id').val(response.company_id).trigger('change'); // Populate and trigger select2 change event
-                $('#project_id').val(response.project_id).trigger('change');
+                $('#company-select2').val(response.company_id).trigger('change'); // Populate and trigger select2 change event
+                $('#project-select2').val(response.project_id).trigger('change');
                 $('#account_name').val(response.account_name);
                 if(response.parent_coa_id != null){
                     $('#parent_coa_id').val(response.parent_coa_id).trigger('change');
@@ -479,6 +507,34 @@
     });
 
     $(document).ready(function () {
+        $('#company-select').on('change', function () {
+            const companyId = $(this).val();
+            const projectSelect = $('#project-select');
+            console.log(companyId);
+
+            // Clear the project dropdown
+            projectSelect.empty();
+            projectSelect.append('<option value="">Select Project</option>');
+
+            if (companyId) {
+                // Make AJAX call to fetch projects
+                $.ajax({
+                    url: `/chart-of-accounts/get-projects/${companyId}`,
+                    type: 'GET',
+                    success: function (projects) {
+                        console.log(projects);
+
+                        projects.forEach(function (project) {
+                            projectSelect.append(`<option value="${project.id}">${project.project_name}</option>`);
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching projects:', xhr.responseText);
+                    }
+                });
+            }
+        });
+
         $('#company-select2').on('change', function () {
             const companyId = $(this).val();
             const projectSelect = $('#project-select2');
@@ -497,7 +553,7 @@
                         console.log(projects);
 
                         projects.forEach(function (project) {
-                            projectSelect.append(`<option value="${project.id}">${project.project_name}</option>`);
+                            projectSelect.append(`<option value="${project.id}">${project.project_name}</option>`).trigger('change');
                         });
                     },
                     error: function (xhr) {

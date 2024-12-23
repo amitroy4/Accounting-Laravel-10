@@ -22,6 +22,7 @@ class ChartOfAccount extends Model
         'is_auto_head',
         'is_active',
         'has_leaf',
+        'payment_type'
     ];
 
     /**
