@@ -41,9 +41,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-
-
     Route::resource('/chart-of-accounts',ChartOfAccountController::class);
+    Route::get('/chart-of-accounts/get-projects/{companyId}', [ChartOfAccountController::class, 'getProjects'])->name('get.projects');
 
     Route::resource('/dashboard/company', CompanyController::class);
     Route::get('/dashboard/company/activeordeactive/{Id}', [CompanyController::class,'activeordeactive'])->name('company.activeordeactive');

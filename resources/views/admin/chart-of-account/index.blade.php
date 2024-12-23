@@ -110,28 +110,25 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="defaultSelect">Company</label>
-                                                    <select class="form-select form-control select2" id="select2" name="company_id">
+                                                    <select class="form-select form-control select2" id="company-select2" name="company_id">
                                                         <option value="">Select Company</option>
                                                         @foreach ($companies as $company)
-                                                        <option value="{{$company->id}}">{{$company->company_name}}</option>
+                                                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('company_id')
-                                                    <span class="text-danger">{{$message}}</span>
+                                                    <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="project-select-2">Project</label>
-                                                    <select class="form-select form-control select2" id="project-select-2" name="project_id">
+                                                    <label for="project-select2">Project</label>
+                                                    <select class="form-select form-control select2" id="project-select2" name="project_id">
                                                         <option value="">Select Project</option>
-                                                        @foreach ($projects as $project)
-                                                        <option value="{{$project->id}}">{{$project->project_name}}</option>
-                                                        @endforeach
                                                     </select>
                                                     @error('project_id')
-                                                    <span class="text-danger">{{$message}}</span>
+                                                    <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -200,30 +197,27 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="company_id">Company</label>
-                                                <select class="form-select form-control select2" id="company_id" name="company_id">
+                                                <label for="defaultSelect">Company</label>
+                                                <select class="form-select form-control select2" id="company-select" name="company_id">
                                                     <option value="">Select Company</option>
                                                     @foreach ($companies as $company)
-                                                    <option value="{{$company->id}}">{{$company->company_name}}</option>
+                                                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('company_id')
-                                                <span class="text-danger">{{$message}}</span>
+                                                <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                            <label for="project_id">Project</label>
-                                            <select class="form-select form-control select2" id="project_id" name="project_id">
-                                                <option value="">Select Project</option>
-                                                @foreach ($projects as $project)
-                                                <option value="{{$project->id}}">{{$project->project_name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('project_id')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                                <label for="project-select-2">Project</label>
+                                                <select class="form-select form-control select2" id="project-select" name="project_id">
+                                                    <option value="">Select Project</option>
+                                                </select>
+                                                @error('project_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -485,9 +479,10 @@
     });
 
     $(document).ready(function () {
-        $('#company-select').on('change', function () {
+        $('#company-select2').on('change', function () {
             const companyId = $(this).val();
-            const projectSelect = $('#project-select');
+            const projectSelect = $('#project-select2');
+            console.log(companyId);
 
             // Clear the project dropdown
             projectSelect.empty();
@@ -496,9 +491,11 @@
             if (companyId) {
                 // Make AJAX call to fetch projects
                 $.ajax({
-                    url: `/get-projects/${companyId}`,
+                    url: `/chart-of-accounts/get-projects/${companyId}`,
                     type: 'GET',
                     success: function (projects) {
+                        console.log(projects);
+
                         projects.forEach(function (project) {
                             projectSelect.append(`<option value="${project.id}">${project.project_name}</option>`);
                         });

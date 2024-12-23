@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -146,5 +147,20 @@ class ChartOfAccountController extends Controller
             ], 200);
         }
     }
+    public function getProjects($companyId)
+    {
+        $projects = Project::whereHas('branch', function ($branchQuery) use ($companyId) {
+            $branchQuery->whereHas('company', function ($companyQuery) use ($companyId) {
+                $companyQuery->where('company_id', $companyId);
+            })->orWhereHas('parentBranch.company', function ($parentQuery) use ($companyId) {
+                $parentQuery->where('company_id', $companyId);
+            });
+        })->get();
+
+        // dd($projects);
+
+        return response()->json($projects);
+    }
+
 
 }
